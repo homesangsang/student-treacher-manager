@@ -3,6 +3,7 @@ package cn.edu.qlu.studentteachermanager.filter;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * token校验功能
+ */
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter{
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -28,6 +32,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter{
             return;
         }
         UsernamePasswordAuthenticationToken authentication = getAuthorization(request);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        chain.doFilter(request, response);
     }
 
      private UsernamePasswordAuthenticationToken getAuthorization(HttpServletRequest request) {

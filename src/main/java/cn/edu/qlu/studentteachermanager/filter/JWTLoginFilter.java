@@ -28,6 +28,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter{
         this.authenticationManager = authenticationManager;
     }
 
+    // 接收并解析用户凭证
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
@@ -45,6 +46,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter{
         return null;
     }
 
+    // 用户登录成功后，调用该方法，在该方法中生成token，并返回给客户端
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         String token = Jwts.builder()
