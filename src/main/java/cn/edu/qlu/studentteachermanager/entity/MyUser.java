@@ -2,10 +2,8 @@ package cn.edu.qlu.studentteachermanager.entity;
 
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * 用户表
@@ -22,7 +20,23 @@ public class MyUser {
 
     private Integer identity; // 用户类别 1. 管理员  2. 老师  3. 学生
 
+    @Override
+    public String toString() {
+        return "MyUser{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", identity=" + identity +
+                ", ifFirstLogin=" + ifFirstLogin +
+                ", authorities=" + authorities +
+                '}';
+    }
+
     private Boolean ifFirstLogin; // 是否是第一次登录
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable
+    private List<Authority> authorities; // 用户对应的权限
 
 
     public Integer getId() {
@@ -49,17 +63,6 @@ public class MyUser {
         this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return "MyUser{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", identity=" + identity +
-                ", ifFirstLogin=" + ifFirstLogin +
-                '}';
-    }
-
     public Integer getIdentity() {
         return identity;
     }
@@ -74,5 +77,13 @@ public class MyUser {
 
     public void setIfFirstLogin(Boolean ifFirstLogin) {
         this.ifFirstLogin = ifFirstLogin;
+    }
+
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 }

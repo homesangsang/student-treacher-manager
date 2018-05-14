@@ -2,7 +2,12 @@ package cn.edu.qlu.studentteachermanager.controller;
 
 import cn.edu.qlu.studentteachermanager.entity.Announcement;
 import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
+import cn.edu.qlu.studentteachermanager.service.AnnouncementService;
+import cn.edu.qlu.studentteachermanager.service.ExperimentClassesService;
+import javassist.compiler.ast.StringL;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,20 +19,24 @@ import java.util.Map;
 @RequestMapping("/student")
 public class StudentController {
 
+    @Autowired
+    private AnnouncementService announcementService;
+
+    @Autowired
+    private ExperimentClassesService experimentClassesService;
+
     /**
      * 查看公告
-     * @param authentication
-     * @param id
+     * @param page
      * @param size
      * @return
      */
     @RequestMapping("/selectAnno")
     public Page<Announcement> selectAnnoByPage(
-            Authentication authentication,
-            @RequestParam(value = "page", defaultValue = "0") Integer id,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size
     ) {
-        return  null;
+        return announcementService.findAll(new PageRequest(page, size));
     }
 
 
@@ -38,7 +47,7 @@ public class StudentController {
      */
     @RequestMapping("/findAnnoInfo")
     public Announcement findAnnoInfoById(Integer announcementId) {
-        return  null;
+        return announcementService.findAnnById(announcementId);
     }
 
     /**
@@ -52,7 +61,7 @@ public class StudentController {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "0") Integer size
     ) {
-        return  null;
+        return experimentClassesService.findAll(new PageRequest(page, size));
     }
 
     /**
@@ -62,7 +71,7 @@ public class StudentController {
      */
     @RequestMapping("/findExpClassById")
     public ExperimentClasses findExpClassById(Integer id) {
-        return null;
+        return experimentClassesService.findById(id);
     }
 
     /**
@@ -71,7 +80,8 @@ public class StudentController {
      * @return
      */
     @RequestMapping("/selectExpClassById")
-    public Map<Object, Object> selectExpClassById(Integer id) {
+    public Map<Object, Object> selectExpClassById(Integer id, Authentication authentication) {
+        String username = (String)authentication.getPrincipal();
         return null;
     }
 }

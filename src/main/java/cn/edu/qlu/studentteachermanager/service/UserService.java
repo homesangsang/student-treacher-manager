@@ -1,7 +1,10 @@
 package cn.edu.qlu.studentteachermanager.service;
 
 import cn.edu.qlu.studentteachermanager.dao.UserDao;
+import cn.edu.qlu.studentteachermanager.entity.JwtUserFactory;
 import cn.edu.qlu.studentteachermanager.entity.MyUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,6 +16,7 @@ import java.util.Collections;
 
 @Service
 public class UserService implements UserDetailsService{
+    private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     UserDao userDao;
@@ -32,6 +36,9 @@ public class UserService implements UserDetailsService{
         if (applicationUser == null) {
             throw new UsernameNotFoundException(s);
         }
-        return new User(applicationUser.getUsername(), applicationUser.getPassword(), Collections.emptyList());
+        //return new User(applicationUser.getUsername(), applicationUser.getPassword(), Collections.emptyList());
+
+        logger.info("用户登录" + applicationUser.toString());
+        return JwtUserFactory.create(applicationUser);
     }
 }

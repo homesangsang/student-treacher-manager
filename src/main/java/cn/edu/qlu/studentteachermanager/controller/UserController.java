@@ -37,8 +37,11 @@ public class UserController {
     public Map<Object, Object> hello(Authentication authentication) {
         String user = (String)authentication.getPrincipal(); // 获取登录用户的用户名
         Map<Object, Object> map = new HashMap<>();
-        map.put("username", user);
-        map.put("password", "word");
+        map.put("principal", authentication.getPrincipal());
+        map.put("authorities", authentication.getAuthorities());
+        map.put("credentials", authentication.getCredentials());
+        map.put("details", authentication.getDetails());
+        map.put("isAuthenticated", authentication.isAuthenticated());
         return map;
     }
 
