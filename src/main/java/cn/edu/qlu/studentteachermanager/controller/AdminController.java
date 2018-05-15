@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@Secured("ADMIN")
+@Secured("ROLE_ADMIN")
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired

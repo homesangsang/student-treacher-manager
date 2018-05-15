@@ -33,7 +33,7 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager()))
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()));
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userDetailsService));
     }
 
     @Override

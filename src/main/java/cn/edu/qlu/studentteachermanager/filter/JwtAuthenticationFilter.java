@@ -1,9 +1,13 @@
 package cn.edu.qlu.studentteachermanager.filter;
 
+import cn.edu.qlu.studentteachermanager.service.UserService;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -17,9 +21,11 @@ import java.util.ArrayList;
  * token校验功能
  */
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter{
+    private UserDetailsService userDetailsService;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
         super(authenticationManager);
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -46,7 +52,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter{
                     .getBody()
                     .getSubject();
             if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                UserDetails userDetails = userDetailsService.loadUserByUsername(user);
+                return new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
             }
             return null;
         }
