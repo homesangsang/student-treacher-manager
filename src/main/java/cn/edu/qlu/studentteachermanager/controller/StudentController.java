@@ -4,16 +4,21 @@ import cn.edu.qlu.studentteachermanager.entity.Announcement;
 import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
 import cn.edu.qlu.studentteachermanager.service.AnnouncementService;
 import cn.edu.qlu.studentteachermanager.service.ExperimentClassesService;
+import cn.edu.qlu.studentteachermanager.service.StudentService;
 import javassist.compiler.ast.StringL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.ManyToMany;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,6 +31,9 @@ public class StudentController {
 
     @Autowired
     private ExperimentClassesService experimentClassesService;
+
+    @Autowired
+    private StudentService studentService;
 
     /**
      * 查看公告
@@ -84,6 +92,20 @@ public class StudentController {
     @RequestMapping("/selectExpClassById")
     public Map<Object, Object> selectExpClassById(Integer id, Authentication authentication) {
         String username = (String)authentication.getPrincipal();
-        return null;
+        studentService.selectExpClassById(id, username);
+        Map<Object, Object> map = new HashMap<>();
+        map.put("result","true");
+        return map;
+    }
+
+    /**
+     * 查看已选课程列表
+     * @param authentication
+     * @return
+     */
+    @GetMapping("/findSelectedExp")
+    public List<ExperimentClasses> findSelectedExp(Authentication authentication) {
+        String username = (String) authentication.getPrincipal();
+        return studentService.findSelectedExp(username);
     }
 }

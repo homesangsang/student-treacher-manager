@@ -82,8 +82,6 @@ public class Teacher {
                 ", tnumber='" + tnumber + '\'' +
                 ", sex='" + sex + '\'' +
                 ", department='" + department + '\'' +
-                ", announcementList=" + announcementList +
-                ", experimentClasses=" + experimentClasses +
                 '}';
     }
 

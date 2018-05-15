@@ -28,7 +28,16 @@ public class AnnouncementService {
         return announcementDao.findAll(pageRequest);
     }
 
+    /**
+     * 根据id查找公告，查看公告详情
+     * @param id
+     * @return
+     */
     public Announcement findAnnById(Integer id) {
         return announcementDao.findById(id);
+    }
+
+    public Announcement save(Announcement announcement) {
+        return announcementDao.save(announcement);
     }
 }

@@ -2,14 +2,16 @@ package cn.edu.qlu.studentteachermanager.controller;
 
 import cn.edu.qlu.studentteachermanager.entity.Announcement;
 import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
+import cn.edu.qlu.studentteachermanager.service.AnnouncementService;
+import cn.edu.qlu.studentteachermanager.service.ExperimentClassesService;
+import cn.edu.qlu.studentteachermanager.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,7 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 public class TeacherController {
 
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private TeacherService teacherService;
+
+    @Autowired
+    private ExperimentClassesService experimentClassesService;
 
     /**
      * 老师添加新的实验课信息
@@ -27,11 +32,13 @@ public class TeacherController {
      * @return
      */
     @RequestMapping("/addExpClass")
-    public ExperimentClasses addExpClass(ExperimentClasses experimentClasses) {
+    public String addExpClass(@RequestBody ExperimentClasses experimentClasses, Authentication authentication) {
+        String username = (String)authentication.getPrincipal();
         if (experimentClasses != null) {
-
+            teacherService.addExpClass(experimentClasses, username);
+            return "success";
         }
-        return null;
+        return "false";
     }
 
     /**
@@ -49,7 +56,7 @@ public class TeacherController {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size
     ) {
-        return null;
+        return experimentClassesService.findAll(new PageRequest(page, size));
     }
 
 
@@ -64,10 +71,23 @@ public class TeacherController {
     public Page<Announcement> selectAnnouByPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
-            @RequestParam(value = "onlyme", defaultValue = "0") Integer onlyMe // 1. 只看自己 0. 查看全部
+            @RequestParam(value = "onlyme", defaultValue = "0") Integer onlyMe, // 1. 只看自己 0. 查看全部
+            Authentication authentication
     ) {
-        return null;
+        return teacherService.selectAnnouByPage(new PageRequest(page, size), onlyMe, (String)authentication.getPrincipal());
     }
+
+    /**
+     * 发布公告
+     * @param announcement
+     * @param authentication
+     * @return
+     */
+    @PostMapping("/addAnn")
+    public Announcement addAnn(@RequestBody Announcement announcement, Authentication authentication) {
+        return teacherService.addAnn(announcement, (String)authentication.getPrincipal());
+    }
+
 
 
 }

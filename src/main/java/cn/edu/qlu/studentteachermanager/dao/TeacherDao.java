@@ -8,4 +8,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface TeacherDao extends PagingAndSortingRepository<Teacher, Integer>, JpaRepository<Teacher, Integer>{
     Teacher findById(Integer id);
 
+    Teacher findByTnumber(String username);
 }

@@ -38,4 +38,8 @@ public class ExperimentClassesService {
         return experimentClassesDao.findById(id);
     }
 
+    public ExperimentClasses save(ExperimentClasses experimentClasses) {
+        return experimentClassesDao.saveAndFlush(experimentClasses);
+    }
+
 }

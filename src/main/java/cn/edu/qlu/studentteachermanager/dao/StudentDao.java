@@ -6,4 +6,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface StudentDao extends PagingAndSortingRepository<Student, Integer>, JpaRepository<Student, Integer>{
     Student findById(Integer id);
+    Student findBySnumber(String username);
 }
