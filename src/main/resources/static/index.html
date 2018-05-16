@@ -5,40 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>login</title>
     <link href="./layui/css/layui.css" rel="stylesheet">
+    <style>
+        .index-body{
+            margin: 30% auto;
+        }
+    </style>
 </head>
 <body>
     <ul class="layui-nav layui-bg-blue">
         <li class="layui-nav-item">system</li>
     </ul>
-
-    <div class="layui-container" >
-        <div class="layui-row">
-            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
-                <div class="layui-bg-orange">移动：6/12 | 平板：6/12 | 桌面：4/12</div>
-            </div>
-            <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
-                <div class="layui-bg-red">移动：6/12 | 平板：6/12 | 桌面：4/12</div>
-            </div>
-            <div class="layui-col-xs4 layui-col-sm12 layui-col-md4">
-                <div class="layui-bg-blue">移动：4/12 | 平板：12/12 | 桌面：4/12</div>
-            </div>
-            <div class="layui-col-xs4 layui-col-sm7 layui-col-md8">
-                <div class="layui-bg-green">移动：4/12 | 平板：7/12 | 桌面：8/12</div>
-            </div>
-            <div class="layui-col-xs4 layui-col-sm5 layui-col-md4">
-                <div class="layui-bg-black">移动：4/12 | 平板：5/12 | 桌面：4/12</div>
-            </div>
-        </div>
-
-    </div>
     <br>
-    <div class="layui-container">
+    <div class="layui-container index-body" >
         <div class="layui-row">
-            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
-                <div class="layui-bg-gray">lalalallalala</div>
+            <div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
+                <div class="">
+                    <form class="layui-form" method="post">
+                        <!--用户名-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="text" placeholder="用户名" class="layui-input" autocomplete="false" name="username">
+                            </div>
+                        </div>
+
+                        <!-- 密码-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="password" placeholder="密码" class="layui-input" required autocomplete="false" name="password">
+                            </div>
+                        </div>
+
+                        <!--登录-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-normal" onclick="login()">登录</button>
+                                <!--<button class="layui-btn layui-btn-normal">重置</button>-->
+                                <button class="layui-btn layui-btn-normal"><a href="classList.html">选课列表</a></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-
     </div>
+
+    <script src="layui/layui.js"></script>
+    <script>
+        layui.use('form', function(){
+            var form = layui.form;
+
+            // 监听提交
+            form.on('submit(formDemo)', function (data) {
+                layer.msg(JSON.stringify(data.field));
+                return false;
+            });
+
+        });
+        function login() {
+            layer.open({
+                type: 1,
+                title: ['第一次登录 修改密码', 'background-color: #1E9FFF'],
+                content: '<input class="layui-input" required type="password" placeholder="请输入新密码" name="newpass">' +
+                '<br>' +
+                '<input class="layui-input" required type="password" placeholder="再次输入新密码" name="newpass1">',
+                anim: 'up',
+                stype: 'position:fixed; left:0; top:0; width:100%; height:100%; border: none; -webkit-animation-duration: .5s; animation-duration: .5s;',
+                btn: ['是', '否'],
+                yes: function (index) {
+                    alert('点击了是');
+                    layer.close(index);
+                }
+            })
+        }
+    </script>
 </body>
 </html>
