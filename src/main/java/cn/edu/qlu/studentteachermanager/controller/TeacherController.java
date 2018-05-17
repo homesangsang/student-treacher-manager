@@ -2,6 +2,7 @@ package cn.edu.qlu.studentteachermanager.controller;
 
 import cn.edu.qlu.studentteachermanager.entity.Announcement;
 import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
+import cn.edu.qlu.studentteachermanager.message.ResultMessage;
 import cn.edu.qlu.studentteachermanager.service.AnnouncementService;
 import cn.edu.qlu.studentteachermanager.service.ExperimentClassesService;
 import cn.edu.qlu.studentteachermanager.service.TeacherService;
@@ -14,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.transform.Result;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Secured("ROLE_TEACHER")
@@ -49,14 +53,19 @@ public class TeacherController {
      * @param size
      * @return
      */
-    @RequestMapping("/selectExpClass")
-    public Page<ExperimentClasses> selectExpClassByPage(
+    @GetMapping("/selectExpClass")
+    public ResultMessage selectExpClassByPage(
             Authentication authentication,
             Integer id,
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size
     ) {
-        return experimentClassesService.findAll(new PageRequest(page, size));
+        if (page > 0) {
+            page--;
+        }
+        Map<Object, Object> result = new HashMap<>();
+        Page<ExperimentClasses> pages  = experimentClassesService.findAll(new PageRequest(page, size));
+        return new ResultMessage(200, pages.getContent(), pages.getTotalElements(), "success");
     }
 
 
@@ -68,13 +77,14 @@ public class TeacherController {
      * @return
      */
     @RequestMapping("/selectAnnouncement")
-    public Page<Announcement> selectAnnouByPage(
+    public ResultMessage selectAnnouByPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "onlyme", defaultValue = "0") Integer onlyMe, // 1. 只看自己 0. 查看全部
             Authentication authentication
     ) {
-        return teacherService.selectAnnouByPage(new PageRequest(page, size), onlyMe, (String)authentication.getPrincipal());
+        Page<Announcement> pages = teacherService.selectAnnouByPage(new PageRequest(page, size), onlyMe, (String)authentication.getPrincipal());
+        return new ResultMessage(200, pages.getContent(), pages.getTotalElements(), "success");
     }
 
     /**

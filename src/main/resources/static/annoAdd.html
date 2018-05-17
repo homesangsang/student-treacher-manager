@@ -21,24 +21,24 @@
             <div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
                 <div class="">
                     <form class="layui-form" action="">
-                        <!--用户名-->
+                        <!--公告标题-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input type="text" placeholder="用户名" class="layui-input" autocomplete="false" name="username">
+                                <input type="text" placeholder="公告标题" class="layui-input" required autocomplete="false" name="title">
                             </div>
                         </div>
 
-                        <!-- 密码-->
+                        <!-- 公告内容-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input type="password" placeholder="密码" class="layui-input" required autocomplete="false" name="password">
+                                <input type="text" placeholder="公告内容" class="layui-input" required autocomplete="false" name="content">
                             </div>
                         </div>
 
-                        <!--登录-->
+                        <!-- 按钮事件-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">登录</button>
+                                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">发布</button>
                                 <!--<button class="layui-btn layui-btn-normal">重置</button>-->
                                 <button class="layui-btn layui-btn-normal"><a href="classList.html">重置</a></button>
                             </div>
@@ -58,16 +58,19 @@
             var form = layui.form;
             var layer = layui.layer;
             var $ = layui.jquery;
-            // 监听提交
+            // 监听发布
             form.on('submit(formDemo)', function (data) {
-                // layer.alert(JSON.stringify(data.field));
 
+                layer.msg(JSON.stringify(data.field));
                 $.ajax({
-                    url:'/login',
+                    url:'/teacher/addAnn',
                     async: false,
                     cache: false,
                     type: 'POST',
-                    contentType: 'application/json',
+                    contentType: 'application/json;charset=UTF-8',
+                    headers: {
+                      "Authorization":$.cookie("Authorization")
+                    },
                     data:JSON.stringify(data.field),
                     success: function (data, status, xhr) {
                         var authorization = xhr.getResponseHeader("Authorization");

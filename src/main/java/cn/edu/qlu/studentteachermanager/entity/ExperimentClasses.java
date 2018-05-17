@@ -1,5 +1,7 @@
 package cn.edu.qlu.studentteachermanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -92,6 +94,7 @@ public class ExperimentClasses {
         return students;
     }
 
+    @JsonBackReference
     public void setStudents(List<Student> students) {
         this.students = students;
     }
@@ -106,8 +109,6 @@ public class ExperimentClasses {
                 ", hour='" + hour + '\'' +
                 ", credit='" + credit + '\'' +
                 ", sum=" + sum +
-                ", students=" + students +
-                ", teachers=" + teachers +
                 '}';
     }
 
@@ -115,6 +116,7 @@ public class ExperimentClasses {
         return teachers;
     }
 
+    @JsonBackReference
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
     }
