@@ -6,11 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -37,8 +40,10 @@ public class UserController {
     public Map<Object, Object> hello(Authentication authentication) {
         String user = (String)authentication.getPrincipal(); // 获取登录用户的用户名
         Map<Object, Object> map = new HashMap<>();
+
+        List<GrantedAuthority> list = new ArrayList<>(authentication.getAuthorities());
         map.put("principal", authentication.getPrincipal());
-        map.put("authorities", authentication.getAuthorities());
+        map.put("authorities", list.get(0).getAuthority());
         map.put("credentials", authentication.getCredentials());
         map.put("details", authentication.getDetails());
         map.put("isAuthenticated", authentication.isAuthenticated());

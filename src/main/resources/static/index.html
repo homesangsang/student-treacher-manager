@@ -6,47 +6,56 @@
     <title>login</title>
     <link href="./layui/css/layui.css" rel="stylesheet">
     <style>
-        .index-body{
-            margin: 30% auto;
+        .index-nav{
+            margin:auto auto;
+            text-align: center;
+            margin-bottom: 5px;
         }
+        .
     </style>
 </head>
 <body>
-    <ul class="layui-nav layui-bg-blue">
-        <li class="layui-nav-item">system</li>
+    <ul class="layui-nav layui-bg-blue index-nav">
+        <li class="layui-nav-item">选课系统</li>
     </ul>
-    <br>
-    <div class="layui-container index-body" >
-        <div class="layui-row">
-            <div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
-                <div class="">
-                    <form class="layui-form" action="">
-                        <!--用户名-->
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <input type="text" placeholder="用户名" class="layui-input" autocomplete="false" name="username">
-                            </div>
+    <div class="layui-container">
+        <form class="layui-form" action="">
+        <div class="">
+            <div class="index-body">
+                <!--用户名-->
+                <div class="layui-row">
+                    <div class="layui-form-item layui-col-xs-offset3">
+                        <div class="layui-input-inline">
+                            <input id="username" type="text" placeholder="用户名" class="layui-input" autocomplete="false" name="username">
                         </div>
-
-                        <!-- 密码-->
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <input type="password" placeholder="密码" class="layui-input" required autocomplete="false" name="password">
-                            </div>
-                        </div>
-
-                        <!--登录-->
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">登录</button>
-                                <!--<button class="layui-btn layui-btn-normal">重置</button>-->
-                                <button class="layui-btn layui-btn-normal"><a href="classList.html">重置</a></button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
+
+
+                <!-- 密码-->
+                <div class="layui-row">
+                    <div class="layui-form-item layui-col-xs-offset3">
+                        <div class="layui-input-inline">
+                            <input type="password" placeholder="密码" class="layui-input" required autocomplete="false" name="password">
+                        </div>
+                    </div>
+                </div>
+
+
+                <!--登录-->
+                <div class="layui-row">
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline layui-col-xs-offset3">
+                            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">登录</button>
+                            <!--<button class="layui-btn layui-btn-normal">重置</button>-->
+                            <button class="layui-btn layui-btn-normal"><a href="teacher/classList.html">重置</a></button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+        </form>
     </div>
 
     <script src="layui/layui.js"></script>
@@ -64,15 +73,38 @@
 
                 $.ajax({
                     url:'/login',
-                    async: false,
+                    async: true,
                     cache: false,
                     type: 'POST',
                     contentType: 'application/json',
                     data:JSON.stringify(data.field),
                     success: function (data, status, xhr) {
                         var authorization = xhr.getResponseHeader("Authorization");
-                        layer.msg("Authorization:" + xhr.getResponseHeader("Authorization"));
                         $.cookie("Authorization", authorization);
+                        $.ajax({
+                            url:'/users/hello',
+                            async:true,
+                            cache:false,
+                            type:'GET',
+                            headers: {
+                                "Authorization":$.cookie("Authorization")
+                            },
+                            success: function (data) {
+                                var result = JSON.stringify(data);
+                                $.cookie("username", data.principal);
+                                $.cookie("isAuthenticated", data.isAuthenticated);
+                                $.cookie("authoritie", data.authorities);
+                            }
+                        });
+                        var role = $.cookie("authoritie");
+                        if (role == "ROLE_ADMIN") {
+                            window.location.href="/admin/index.html";
+                        } else if (role == "ROLE_TEACHER") {
+                            window.location.href="/teacher/index.html";
+                        } else if (role == "ROLE_STUDENT") {
+                            window.location.href="/student/index.html";
+                        }
+
                     }
                 });
                 return false;

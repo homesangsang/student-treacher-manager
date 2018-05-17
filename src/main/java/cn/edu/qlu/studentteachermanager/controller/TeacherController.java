@@ -9,6 +9,7 @@ import cn.edu.qlu.studentteachermanager.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -83,6 +84,9 @@ public class TeacherController {
             @RequestParam(value = "onlyme", defaultValue = "0") Integer onlyMe, // 1. 只看自己 0. 查看全部
             Authentication authentication
     ) {
+        if (page >0 ) {
+            page--;
+        }
         Page<Announcement> pages = teacherService.selectAnnouByPage(new PageRequest(page, size), onlyMe, (String)authentication.getPrincipal());
         return new ResultMessage(200, pages.getContent(), pages.getTotalElements(), "success");
     }
@@ -93,7 +97,7 @@ public class TeacherController {
      * @param authentication
      * @return
      */
-    @PostMapping("/addAnn")
+    @PostMapping(value = "/addAnn", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Announcement addAnn(@RequestBody Announcement announcement, Authentication authentication) {
         return teacherService.addAnn(announcement, (String)authentication.getPrincipal());
     }

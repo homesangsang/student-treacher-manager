@@ -1,5 +1,8 @@
 package cn.edu.qlu.studentteachermanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,6 +24,7 @@ public class Teacher {
     private String department; // 部门
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher", cascade = CascadeType.REMOVE)
+    @JsonBackReference
     private List<Announcement> announcementList; // 教师发送公告的列表
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "teachers", cascade = CascadeType.REMOVE)

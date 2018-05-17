@@ -1,5 +1,7 @@
 package cn.edu.qlu.studentteachermanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -14,6 +16,7 @@ public class Announcement {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
+    @JsonBackReference
     private Teacher teacher; // 发公告的老师
 
     private String title; // 公告标题

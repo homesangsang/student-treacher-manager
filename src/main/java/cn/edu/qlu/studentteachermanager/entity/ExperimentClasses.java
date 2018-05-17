@@ -1,6 +1,7 @@
 package cn.edu.qlu.studentteachermanager.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -28,10 +29,12 @@ public class ExperimentClasses {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable
+    @JsonBackReference
     private List<Student> students; // 一门课程有许多学生
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable
+    @JsonIgnore
     private List<Teacher> teachers; // 多个老师可以教同一门课程（助教）
 
     public Integer getId() {
@@ -94,7 +97,6 @@ public class ExperimentClasses {
         return students;
     }
 
-    @JsonBackReference
     public void setStudents(List<Student> students) {
         this.students = students;
     }
@@ -116,7 +118,6 @@ public class ExperimentClasses {
         return teachers;
     }
 
-    @JsonBackReference
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
     }

@@ -1,5 +1,7 @@
 package cn.edu.qlu.studentteachermanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -21,6 +23,7 @@ public class Student {
     private String department; // 部门
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "students", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<ExperimentClasses> experimentClasses; // 一个学生可以选多门课程
 
     @Override

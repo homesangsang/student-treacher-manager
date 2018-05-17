@@ -2,6 +2,7 @@ package cn.edu.qlu.studentteachermanager.controller;
 
 import cn.edu.qlu.studentteachermanager.entity.Announcement;
 import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
+import cn.edu.qlu.studentteachermanager.message.ResultMessage;
 import cn.edu.qlu.studentteachermanager.service.AnnouncementService;
 import cn.edu.qlu.studentteachermanager.service.ExperimentClassesService;
 import cn.edu.qlu.studentteachermanager.service.StudentService;
@@ -42,11 +43,15 @@ public class StudentController {
      * @return
      */
     @RequestMapping("/selectAnno")
-    public Page<Announcement> selectAnnoByPage(
+    public ResultMessage selectAnnoByPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size
     ) {
-        return announcementService.findAll(new PageRequest(page, size));
+        if (page > 0) {
+            page--;
+        }
+        Page<Announcement> pages = announcementService.findAll(new PageRequest(page, size));
+        return new ResultMessage(200, pages.getContent(), pages.getTotalElements(), "success");
     }
 
 
@@ -67,11 +72,15 @@ public class StudentController {
      * @return
      */
     @RequestMapping("/selectExpClass")
-    public Page<ExperimentClasses> selectExpClassByPage(
+    public ResultMessage selectExpClassByPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "0") Integer size
     ) {
-        return experimentClassesService.findAll(new PageRequest(page, size));
+        if (page > 0) {
+            page--;
+        }
+        Page<ExperimentClasses> pages = experimentClassesService.findAll(new PageRequest(page, size));
+        return new ResultMessage(200, pages.getContent(), pages.getTotalElements(), "success");
     }
 
     /**

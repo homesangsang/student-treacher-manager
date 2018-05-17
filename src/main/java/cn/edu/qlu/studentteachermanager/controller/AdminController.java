@@ -4,6 +4,7 @@ import cn.edu.qlu.studentteachermanager.dao.UserDao;
 import cn.edu.qlu.studentteachermanager.entity.Admin;
 import cn.edu.qlu.studentteachermanager.entity.Student;
 import cn.edu.qlu.studentteachermanager.entity.Teacher;
+import cn.edu.qlu.studentteachermanager.message.ResultMessage;
 import cn.edu.qlu.studentteachermanager.service.StudentService;
 import cn.edu.qlu.studentteachermanager.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.transform.Result;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,11 +78,15 @@ public class AdminController {
      * @return
      */
     @GetMapping("/getStudentList")
-    public Page<Student> getStudentListByPage(
+    public ResultMessage getStudentListByPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size
     ) {
-        return studentService.findAllStudent(new PageRequest(page, size));
+        if (page > 0) {
+            page--;
+        }
+        Page<Student> pages = studentService.findAllStudent(new PageRequest(page, size));
+        return new ResultMessage(200, pages.getContent(), pages.getTotalElements(), "success");
     }
 
     /**
@@ -90,11 +96,15 @@ public class AdminController {
      * @return
      */
     @GetMapping("/getTeacherList")
-    public Page<Teacher> getTeacherListByPage(
+    public ResultMessage getTeacherListByPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "10") Integer size
     ) {
-        return teacherService.findAllTeacher(new PageRequest(page, size));
+        if (page > 0) {
+            page--;
+        }
+        Page<Teacher> pages =  teacherService.findAllTeacher(new PageRequest(page, size));
+        return new ResultMessage(200, pages.getContent(), pages.getTotalElements(), "success");
     }
 
     /**
