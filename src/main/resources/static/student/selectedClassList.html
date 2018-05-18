@@ -39,7 +39,7 @@
                     layer.msg('ID：'+ data.id + ' 的查看操作');
                 }  else if(obj.event === 'edit'){
                     $.ajax({
-                        url: '/student/findSelectedExp',
+                        url: '/student/deleteSelectedById',
                         async: true,
                         cache: false,
                         type: 'GET',
@@ -50,7 +50,8 @@
                             "id":data.id
                         },
                         success: function (data) {
-                            layer.msg("选课成功");
+                            obj.del();
+                            layer.msg("退选成功");
                         },
                     });
                     layer.alert('编辑行：<br>'+ JSON.stringify(data))

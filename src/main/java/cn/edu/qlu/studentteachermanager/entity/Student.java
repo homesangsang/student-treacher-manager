@@ -22,7 +22,7 @@ public class Student {
 
     private String department; // 部门
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "students", cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "students", cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     @JsonIgnore
     private List<ExperimentClasses> experimentClasses; // 一个学生可以选多门课程
 

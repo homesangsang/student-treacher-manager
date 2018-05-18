@@ -107,6 +107,8 @@ public class StudentService {
         for (ExperimentClasses exp:exps) {
             if (exp.getId() == experimentClasses.getId()) {
                 student.getExperimentClasses().remove(exp);
+                experimentClasses.getStudents().remove(student);
+                experimentClassesService.save(experimentClasses);
                 studentDao.save(student);
                 break;
             }
