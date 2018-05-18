@@ -6,111 +6,114 @@
     <title>login</title>
     <link href="./layui/css/layui.css" rel="stylesheet">
     <style>
-        .index-nav{
-            margin:auto auto;
+        .index-nav {
+            margin: auto auto;
             text-align: center;
             margin-bottom: 5px;
         }
+
+        .layui-row {
+            margin-bottom: 1em;
+        }
+
     </style>
 </head>
 <body>
-    <ul class="layui-nav layui-bg-blue index-nav">
-        <li class="layui-nav-item">选课系统</li>
-    </ul>
-    <div class="layui-container">
+<ul class="layui-nav layui-bg-blue index-nav">
+    <li class="layui-nav-item">选课系统</li>
+</ul>
+<div class="layui-container">
+    <div class="layui-row">
         <form class="layui-form" action="">
-        <div class="">
             <div class="index-body">
-                </div>
-                <!--用户名-->
-                <div class="layui-row">
-                    <div class="layui-form-item layui-col-xs-offset3">
-                        <div class="layui-input-inline">
-                            <input id="username" type="text" placeholder="用户名" class="layui-input" autocomplete="false" name="username">
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- 密码-->
-                <div class="layui-row">
-                    <div class="layui-form-item layui-col-xs-offset3">
-                        <div class="layui-input-inline">
-                            <input type="password" placeholder="密码" class="layui-input" required autocomplete="false" name="password">
-                        </div>
-                    </div>
-                </div>
-
-
-                <!--登录-->
-                <div class="layui-row">
-                    <div class="layui-form-item">
-                        <div class="layui-input-inline layui-col-xs-offset3">
-                            <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">登录</button>
-                            <!--<button class="layui-btn layui-btn-normal">重置</button>-->
-                            <button class="layui-btn layui-btn-normal"><a href="teacher/classList.html">重置</a></button>
-                        </div>
-                    </div>
-                </div>
-
             </div>
-        </div>
+            <!--用户名-->
+            <div class="layui-row">
+                <div class="">
+                    <div class="layui-input-inline">
+                        <input id="username" type="text" placeholder="用户名" class="layui-input" autocomplete="false"
+                               name="username">
+                    </div>
+                </div>
+            </div>
+            <!-- 密码-->
+            <div class="layui-row">
+                <div class="">
+                    <div class="layui-input-inline">
+                        <input type="password" placeholder="密码" class="layui-input" required autocomplete="false"
+                               name="password">
+                    </div>
+                </div>
+            </div>
+            <!--登录-->
+            <div class="layui-row">
+                <div class="layui-form-item">
+                    <div class="">
+                        <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">登录</button>
+                        <!--<button class="layui-btn layui-btn-normal">重置</button>-->
+                        <button class="layui-btn layui-btn-normal"><a href="teacher/classList.html">重置</a></button>
+                    </div>
+                </div>
+            </div>
         </form>
     </div>
+</div>
 
-    <script src="layui/layui.js"></script>
-    <script src="layui/jquery-1.11.1.min.js"></script>
-    <script src="./layui/jquery.cookie.js"></script>
-    <script>
+<script src="layui/layui.js"></script>
+<script src="layui/jquery-1.11.1.min.js"></script>
+<script src="./layui/jquery.cookie.js"></script>
+<script>
 
-        layui.use(['form', 'layer','jquery'], function(){
-            var form = layui.form;
-            var layer = layui.layer;
-            var $ = layui.jquery;
-            // 监听提交
-            form.on('submit(formDemo)', function (data) {
-                // layer.alert(JSON.stringify(data.field));
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form;
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        // 监听提交
+        form.on('submit(formDemo)', function (data) {
+            // layer.alert(JSON.stringify(data.field));
 
-                $.ajax({
-                    url:'/login',
-                    async: true,
-                    cache: false,
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data:JSON.stringify(data.field),
-                    success: function (data, status, xhr) {
-                        var authorization = xhr.getResponseHeader("Authorization");
-                        $.cookie("Authorization", authorization);
-                        $.ajax({
-                            url:'/users/hello',
-                            async:true,
-                            cache:false,
-                            type:'GET',
-                            headers: {
-                                "Authorization":$.cookie("Authorization")
-                            },
-                            success: function (data) {
-                                var result = JSON.stringify(data);
-                                $.cookie("username", data.principal);
-                                $.cookie("isAuthenticated", data.isAuthenticated);
-                                $.cookie("authoritie", data.authorities);
+            $.ajax({
+                url: '/login',
+                async: true,
+                cache: false,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data.field),
+                success: function (data, status, xhr) {
+                    var authorization = xhr.getResponseHeader("Authorization");
+                    $.cookie("Authorization", authorization);
+                    $.ajax({
+                        url: '/users/hello',
+                        async: true,
+                        cache: false,
+                        type: 'GET',
+                        headers: {
+                            "Authorization": $.cookie("Authorization")
+                        },
+                        success: function (data) {
+                            var result = JSON.stringify(data);
+                            $.cookie("username", data.principal);
+                            $.cookie("isAuthenticated", data.isAuthenticated);
+                            $.cookie("authoritie", data.authorities);
+                            var role = data.authorities;
+                            console.log(role);
+                            if (role === "ROLE_ADMIN") {
+                                console.log("admin")
+                                window.location.href = "/admin/index.html";
+                            } else if (role === "ROLE_TEACHER") {
+                                console.log("teacher")
+                                window.location.href = "/teacher/index.html";
+                            } else if (role === "ROLE_STUDENT") {
+                                console.log("student")
+                                window.location.href = "/student/index.html";
                             }
-                        });
-                        var role = $.cookie("authoritie");
-                        if (role == "ROLE_ADMIN") {
-                            window.location.href="/admin/index.html";
-                        } else if (role == "ROLE_TEACHER") {
-                            window.location.href="/teacher/index.html";
-                        } else if (role == "ROLE_STUDENT") {
-                            window.location.href="/student/index.html";
                         }
-
-                    }
-                });
-                return false;
+                    });
+                }
             });
-
+            return false;
         });
-    </script>
+    });
+</script>
 </body>
 </html>
