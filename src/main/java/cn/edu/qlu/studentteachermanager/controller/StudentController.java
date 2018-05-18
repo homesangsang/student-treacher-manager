@@ -74,7 +74,7 @@ public class StudentController {
     @RequestMapping("/selectExpClass")
     public ResultMessage selectExpClassByPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
-            @RequestParam(value = "size", defaultValue = "0") Integer size
+            @RequestParam(value = "size", defaultValue = "10") Integer size
     ) {
         if (page > 0) {
             page--;
