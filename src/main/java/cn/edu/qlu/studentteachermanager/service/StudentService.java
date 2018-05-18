@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,13 +64,30 @@ public class StudentService {
      * @param expClassId
      * @param username
      */
-    public void selectExpClassById(Integer expClassId, String username) {
+    public boolean selectExpClassById(Integer expClassId, String username) {
         Student student = studentDao.findBySnumber(username); // 获取学生对象
         ExperimentClasses exp = experimentClassesService.findById(expClassId); //获取课程对象
+        if (exp.getSum() <= 0) {
+            return false;
+        }
         exp.setSum(exp.getSum() - 1);
+        if (exp.getStudents() != null) {
+            exp.getStudents().add(student);
+        } else {
+            List<Student> list = new ArrayList<>();
+            list.add(student);
+            exp.setStudents(list);
+        }
+        if (student.getExperimentClasses() != null) {
+            student.getExperimentClasses().add(exp);
+        } else {
+            List<ExperimentClasses> list = new ArrayList<>();
+            list.add(exp);
+            student.setExperimentClasses(list);
+        }
         experimentClassesService.save(exp);
-        student.getExperimentClasses().add(exp);
         studentDao.save(student);
+        return true;
     }
 
     /**
@@ -80,5 +98,19 @@ public class StudentService {
     public List<ExperimentClasses> findSelectedExp(String username) {
         Student student = studentDao.findBySnumber(username);
         return student.getExperimentClasses();
+    }
+
+    public void deleteExpBySnumber(String snumber, Integer expId) {
+        Student student = studentDao.findBySnumber(snumber);
+        ExperimentClasses experimentClasses = experimentClassesService.findById(expId);
+        List<ExperimentClasses> exps = student.getExperimentClasses();
+        for (ExperimentClasses exp:exps) {
+            if (exp.getId() == experimentClasses.getId()) {
+                student.getExperimentClasses().remove(exp);
+                studentDao.save(student);
+                break;
+            }
+        }
+
     }
 }

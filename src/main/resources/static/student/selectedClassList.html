@@ -8,22 +8,16 @@
 </head>
 <body>
     <ul class="layui-nav layui-bg-blue">
-        <li class="layui-nav-item">选课列表</li>
+        <li class="layui-nav-item">已选选课列表</li>
     </ul>
     <div style="margin-bottom: 10px;"></div>
 
-    <div class="layui-btn-group demoTable">
-        <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
-        <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
-        <button class="layui-btn" data-type="isAll">验证是否全选</button>
-    </div>
-
     <!--显示数据表格-->
-    <table id="selectExpClass" lay-filter="selectExpClass"></table>
+    <table id="findSelectedExp" lay-filter="findSelectedExp"></table>
 
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">选课</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">退选</a>
     </script>
 
 
@@ -38,18 +32,14 @@
             var layer = layui.layer;
             var $ = layui.jquery;
 
-            //监听表格复选框选择
-            table.on('checkbox(demo)', function(obj){
-                console.log(obj)
-            });
             //监听工具条
-            table.on('tool(selectExpClass)', function(obj){
+            table.on('tool(findSelectedExp)', function(obj){
                 var data = obj.data;
                 if(obj.event === 'detail'){
                     layer.msg('ID：'+ data.id + ' 的查看操作');
                 }  else if(obj.event === 'edit'){
                     $.ajax({
-                        url: '/student/selectExpClassById',
+                        url: '/student/findSelectedExp',
                         async: true,
                         cache: false,
                         type: 'GET',
@@ -89,8 +79,8 @@
                 active[type] ? active[type].call(this) : '';
             });
             table.render({
-               elem: '#selectExpClass',
-                url:'/student/selectExpClass',
+               elem: '#findSelectedExp',
+                url:'/student/findSelectedExp',
                 headers:{Authorization:$.cookie("Authorization")},
                 request: {
                   pageName: 'page',

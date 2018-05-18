@@ -113,8 +113,19 @@ public class StudentController {
      * @return
      */
     @GetMapping("/findSelectedExp")
-    public List<ExperimentClasses> findSelectedExp(Authentication authentication) {
+    public ResultMessage findSelectedExp(Authentication authentication,
+                                                   @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                   @RequestParam(value = "size", defaultValue = "10") Integer size
+    ) {
         String username = (String) authentication.getPrincipal();
-        return studentService.findSelectedExp(username);
+        List<ExperimentClasses> list =  studentService.findSelectedExp(username);
+        return new ResultMessage(200, list, Long.parseLong(String.valueOf(list.size())), "success");
+    }
+
+    @GetMapping("/deleteSelectedById")
+    public String deleteSelected(Authentication authentication,Integer id) {
+        String username = (String) authentication.getPrincipal();
+        studentService.deleteExpBySnumber(username, id);
+        return "success";
     }
 }
