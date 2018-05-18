@@ -18,23 +18,6 @@
         <button class="layui-btn" data-type="isAll">验证是否全选</button>
     </div>
 
-    <!--<table class="layui-table" lay-data="{url:'/?page=1&limit=10', page:true, id:'idTest'}" lay-filter="demo">-->
-        <!--<thead>-->
-        <!--<tr>-->
-            <!--<th lay-data="{type:'checkbox', fixed: 'left'}"></th>-->
-            <!--<th lay-data="{field:'id', sort: true, fixed: true}">ID</th>-->
-            <!--<th lay-data="{field:'name' }">实验名称</th>-->
-            <!--<th lay-data="{field:'location',sort: true}">地点</th>-->
-            <!--<th lay-data="{field:'time'}">时间</th>-->
-            <!--<th lay-data="{field:'hour'}">学时</th>-->
-            <!--<th lay-data="{field:'credit', sort: true}">学分</th>-->
-
-            <!--<th lay-data="{field:'sum'}">开课人数</th>-->
-            <!--&lt;!&ndash;<th lay-data="{field:'left', sort: true}">剩余人数</th>&ndash;&gt;-->
-            <!--<th lay-data="{fixed: 'right', align:'center', toolbar: '#barDemo'}">操作</th>-->
-        <!--</tr>-->
-        <!--</thead>-->
-    <!--</table>-->
     <!--显示数据表格-->
     <table id="selectExpClass" lay-filter="selectExpClass"></table>
 
@@ -56,7 +39,6 @@
             var layer = layui.layer;
             var $ = layui.jquery;
 
-            layer.alert($.cookie('Authorization'));
             //监听表格复选框选择
             table.on('checkbox(demo)', function(obj){
                 console.log(obj)

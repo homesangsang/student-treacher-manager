@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>教师端</title>
     <link href="../layui/css/layui.css" rel="stylesheet">
 </head>
@@ -10,11 +11,59 @@
         <li class="layui-nav-item">选课系统</li>
     </ul>
 
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="layui-col-xs6 layui-col-xs-offset4" data-type="addAnno">
+                <button class="layui-btn layui-btn-normal" id="pushAnno">
+                    发布通知
+                </button>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs6 layui-col-xs-offset4" data-type="addAnno">
+                <button class="layui-btn layui-btn-normal" id="pushClass">
+                    发布实验课
+                </button>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs6 layui-col-xs-offset4">
+                <button class="layui-btn layui-btn-normal">
+                    <a href="annoList.html">查看公告列表</a>
+                </button>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-col-xs6 layui-col-xs-offset4">
+                <button class="layui-btn layui-btn-normal">
+                    <a href="classList.html">查看课程列表</a>
+                </button>
+            </div>
+        </div>
+    </div>
+
 
 
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script src="../layui/jquery-1.11.1.min.js"></script>
     <script src="../layui/jquery.cookie.js" charset="utf-8"></script>
+    <script>
+        layui.use(['table', 'layer', 'jquery'], function(){
+            var table = layui.table;
+            var layer = layui.layer;
+            var $ = layui.$
+            $("#pushAnno").click(function () {
+                layer.open({
+                        type: 2,
+                        title: '发布公告',
+                        shadeClose: true,
+                        shade: 0.8,
+                        area: ['380px', '90%'],
+                        content: 'annoAdd.html' //iframe的url
+                    });
+            });
+        });
+    </script>
    
 </body>
 </html>

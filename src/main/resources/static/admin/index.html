@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>管理员端</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="../layui/css/layui.css" rel="stylesheet">
+    <style>
+        .index-nav {
+            text-align: center;
+        }
+        .layui-container{
+            margin: 10px auto;
+        }
+
+        .layui-row {
+            margin: 5em auto;
+        }
+    </style>
 </head>
 <body>
     <ul class="layui-nav layui-bg-blue index-nav">
@@ -12,14 +25,18 @@
 
     <div class="layui-container">
         <div class="layui-row">
-            <button class="layui-btn layui-btn-normal">
-                <a class="layui-btn" href="studentList.html"/>
-            </button>
+            <div class="layui-col-xs6 layui-col-xs-offset4">
+                <button class="layui-btn layui-btn-normal">
+                    <a href="studentList.html">查看学生列表</a>
+                </button>
+            </div>
         </div>
         <div class="layui-row">
-            <button class="layui-btn layui-btn-normal">
-                <a class="layui-btn" href="teacherList.html"/>
-            </button>
+            <div class="layui-col-xs6 layui-col-xs-offset4">
+                <button class="layui-btn layui-btn-normal">
+                    <a href="teacherList.html">查看老师列表</a>
+                </button>
+            </div>
         </div>
     </div>
 

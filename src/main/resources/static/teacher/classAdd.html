@@ -21,26 +21,50 @@
             <div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
                 <div class="">
                     <form class="layui-form" action="">
-                        <!--公告标题-->
+                        <!--实验课名称-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input type="text" placeholder="公告标题" class="layui-input" required autocomplete="false" name="title">
+                                <input type="text" placeholder="课程名称" class="layui-input" required autocomplete="false" name="name">
                             </div>
                         </div>
 
-                        <!-- 公告内容-->
+                        <!-- 上课地点-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input type="text" placeholder="公告内容" class="layui-input" required autocomplete="false" name="content">
+                                <input type="text" placeholder="上课地点" class="layui-input" required autocomplete="false" name="location">
                             </div>
                         </div>
 
+                        <!-- 开课时间-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="text" placeholder="开课时间" class="layui-input" required autocomplete="false" name="time">
+                            </div>
+                        </div>
+                        <!-- 学时-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="text" placeholder="学时" class="layui-input" required autocomplete="false" name="hour">
+                            </div>
+                        </div>
+                        <!-- 学分-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="text" placeholder="学时" class="layui-input" required autocomplete="false" name="credit">
+                            </div>
+                        </div>
+                        <!-- 人数-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="text" placeholder="学时" class="layui-input" required autocomplete="false" name="sum">
+                            </div>
+                        </div>
                         <!-- 按钮事件-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">发布</button>
                                 <!--<button class="layui-btn layui-btn-normal">重置</button>-->
-                                <button class="layui-btn layui-btn-normal"><a href="classList.html">重置</a></button>
+                                <button class="layui-btn layui-btn-normal">重置</button>
                             </div>
                         </div>
                     </form>
@@ -62,7 +86,7 @@
             form.on('submit(formDemo)', function (data) {
 
                 $.ajax({
-                    url:'/teacher/addAnn',
+                    url:'/teacher/addExpClass',
                     async: false,
                     cache: false,
                     type: 'POST',
@@ -72,9 +96,8 @@
                     },
                     data:JSON.stringify(data.field),
                     success: function (data, status, xhr) {
-                        var authorization = xhr.getResponseHeader("Authorization");
-                        layer.msg("Authorization:" + xhr.getResponseHeader("Authorization"));
-                        $.cookie("Authorization", authorization);
+                        layer.msg("添加成功");
+                        window.location.href="classList.html";
                     }
                 });
                 return false;

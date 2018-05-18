@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>选课列表</title>
     <link href="../layui/css/layui.css" rel="stylesheet">
+    <style>
+        body{
+            text-align:center;
+        }
+    </style>
 </head>
 <body>
     <ul class="layui-nav layui-bg-blue">
@@ -13,9 +18,7 @@
     <div style="margin-bottom: 10px;"></div>
 
     <div class="layui-btn-group demoTable">
-        <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
-        <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
-        <button class="layui-btn" data-type="isAll">验证是否全选</button>
+        <button class="layui-btn" data-type="getCheckData">新增学生</button>
     </div>
 
     <!--显示数据表格-->
@@ -39,7 +42,6 @@
             var layer = layui.layer;
             var $ = layui.jquery;
 
-            layer.alert($.cookie('Authorization'));
             //监听表格复选框选择
             table.on('checkbox(demo)', function(obj){
                 console.log(obj)
@@ -48,7 +50,21 @@
             table.on('tool(getStudentList)', function(obj){
                 var data = obj.data;
                 if(obj.event === 'detail'){
-                    layer.msg('ID：'+ data.id + ' 的查看操作');
+                    // layer.msg('ID：'+ data.id + ' 的查看操作');
+                    layer.open({
+                        type:1,
+                        title:['详细信息','text-align:center'],
+                        content:'<div class="layui-container">' +
+                        '<div class="layui-card">' +
+                            ' <div class="layui-card-body">' +
+                               '<p>ID：'+data.id+'</p>' +
+                               '<p>姓名：'+data.name+'</p>' +
+                               '<p>学号：'+data.snumber+'</p>' +
+                               '<p>学院：'+data.department+'</p>' +
+                            '</div>' +
+                        '</div>'
+
+                    })
                 } else if(obj.event === 'del'){
                     layer.confirm('真的删除行么', function(index){
                         obj.del();

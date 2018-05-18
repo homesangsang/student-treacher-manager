@@ -35,6 +35,7 @@ public class MyWebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and()
                 .addFilter(new JWTLoginFilter(authenticationManager()))
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userDetailsService));
+        http.headers().frameOptions().disable();
     }
 
     @Override
