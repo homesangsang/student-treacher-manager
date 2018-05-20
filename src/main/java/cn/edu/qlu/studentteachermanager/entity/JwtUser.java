@@ -6,11 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
  * Description:
- * User: 桑智勇(homesangsang)
- * Date: 2018-05-14
- * Time: 10:30
  */
 public class JwtUser implements UserDetails {
     private final Integer id;

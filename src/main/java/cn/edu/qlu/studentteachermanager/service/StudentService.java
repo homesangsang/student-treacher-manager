@@ -33,11 +33,14 @@ public class StudentService {
      * @return
      */
     public Student addStudent(Student student) {
-        MyUser user = new MyUser();
-        user.setUsername(student.getSnumber());
-        user.setIfFirstLogin(true);
-        user.setPassword(bCryptPasswordEncoder.encode("666666"));
-        userDao.save(user);
+        MyUser user = userDao.findByUsername(student.getSnumber());
+        if (user == null || user.getId() == null) {
+            user = new MyUser();
+            user.setUsername(student.getSnumber());
+            user.setIfFirstLogin(true);
+            user.setPassword(bCryptPasswordEncoder.encode("666666"));
+            userDao.save(user);
+        }
         return studentDao.save(student);
     }
 
@@ -100,6 +103,11 @@ public class StudentService {
         return student.getExperimentClasses();
     }
 
+    /**
+     * 退选课程
+     * @param snumber
+     * @param expId
+     */
     public void deleteExpBySnumber(String snumber, Integer expId) {
         Student student = studentDao.findBySnumber(snumber);
         ExperimentClasses experimentClasses = experimentClassesService.findById(expId);
@@ -114,5 +122,9 @@ public class StudentService {
             }
         }
 
+    }
+
+    public void deleteStudentById(Student student) {
+        studentDao.delete(student);
     }
 }

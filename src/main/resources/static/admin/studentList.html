@@ -18,16 +18,21 @@
     <div style="margin-bottom: 10px;"></div>
 
     <div class="layui-btn-group demoTable">
-        <button class="layui-btn" data-type="getCheckData">新增学生</button>
+        <!--<button class="layui-btn" data-type="getCheckData">新增学生</button>-->
     </div>
 
     <!--显示数据表格-->
     <table id="getStudentList" lay-filter="getStudentList"></table>
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+        <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+        <div class="layui-btn-group">
+            <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">修改</a>-->
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </div>
     </script>
 
 
@@ -35,6 +40,7 @@
     <script src="../layui/layui.js" charset="utf-8"></script>
     <script src="../layui/jquery-1.11.1.min.js"></script>
     <script src="../layui/jquery.cookie.js" charset="utf-8"></script>
+    <script src="../layui/jquery.params.js" charset="utf-8"></script>
     <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
     <script>
         layui.use(['table', 'layer', 'jquery'], function(){
@@ -61,17 +67,40 @@
                                '<p>姓名：'+data.name+'</p>' +
                                '<p>学号：'+data.snumber+'</p>' +
                                '<p>学院：'+data.department+'</p>' +
+                               '<p>性别：'+data.sex+'</p>' +
                             '</div>' +
                         '</div>'
 
                     })
                 } else if(obj.event === 'del'){
-                    layer.confirm('真的删除行么', function(index){
+                    layer.confirm('真的删除吗？', function(index){
+                        $.ajax({
+                            url:'/admin/delStudent',
+                            async: false,
+                            cache: false,
+                            type: 'POST',
+                            contentType: 'application/json;charset=UTF-8',
+                            data:JSON.stringify(data),
+                            headers: {
+                              "Authorization":$.cookie("Authorization")
+                            },
+                            success: function (data, status, xhr) {
+                                layer.msg(data);
+                            }
+                        });
                         obj.del();
                         layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
-                    layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                    layer.open({
+                        type:2,
+                        title:['详细信息','text-align:center'],
+                        content:"studentModify.html?id="+data.id +
+                            "&name=" + data.name +
+                            "&snumber=" + data.snumber +
+                            "&sex=" + data.sex +
+                            "&department=" + data.department
+                    })
                 }
             });
 
@@ -113,16 +142,23 @@
                 },
                 page: true,
                 cols: [[
-                    {field:'id', title:'ID', sort:true, fixed:'left'},
+//                    {field:'id', title:'ID', sort:true, fixed:'left'}, 不显示
                     {field:'name', title:'姓名'},
                     {field:'snumber', title:'学号'},
                     {field:'department', title:'学院'},
-                    {field:'sex', title:'性别'},
+//                    {field:'sex', title:'性别'},
                     {fixed: 'right', align:'center', toolbar: '#barDemo'}
                 ]]
             });
         });
     </script>
-
+<script type="text/html" id="editLayer">
+    <form class="layui-form" >
+        <input type="text" class="layui-form-text" placeholder="姓名">
+        <input type="text" class="layui-form-text" placeholder="学院">
+        <input type="text" class="layui-form-text" placeholder="学号">
+    </form>
+</script>
 </body>
+
 </html>

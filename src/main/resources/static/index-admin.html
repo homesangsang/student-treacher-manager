@@ -38,6 +38,24 @@
 <!-- Body -->
 <body>
 
+<!--详细信息-->
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="hidden">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" id="content">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal();">关闭
+                </button>
+                <button type="button" class="btn btn-primary">
+                    确定
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+<!--/详细信息-->
 <!-- Loading Container -->
 <div class="loading-container">
     <div class="loading-progress">
@@ -65,7 +83,7 @@
 <div class="navbar" style="height:0px">
     <div class="navbar-inner" id="admin">
         <div class="navbar-header" style="margin-left:10px;color:#fff;">
-            <span class="profile"><h4>我他娘真是个天才</h4></span>
+            <span class="profile"><h4>综合信息</h4></span>
         </div>
         <!-- <div class="navbar-header pull-right" style="margin-right:10px;color:#fff;">
         <span class="profile"><h4>退出</h4></span>
@@ -90,7 +108,7 @@
             <div class="col-xs-12 col-md-12">
                 <div class="widget">
                     <div class="widget-header ">
-                        <span class="widget-caption">学生列表</span>
+                        <span class="widget-caption"><a href="./admin/studentList.html" class="btn btn-info"></a>学生列表</span>
                         <div class="widget-buttons">
                             <a href="#" data-toggle="maximize">
                                 <i class="fa fa-expand"></i>
@@ -142,7 +160,7 @@
         <div class="col-xs-12 col-md-12">
             <div class="widget">
                 <div class="widget-header ">
-                    <span class="widget-caption">教工列表</span>
+                    <span class="widget-caption"><a href="./admin/teacherList.html" class="btn btn-info"></a>教工列表</span>
                     <div class="widget-buttons">
                         <a href="#" data-toggle="maximize">
                             <i class="fa fa-expand"></i>
@@ -189,8 +207,6 @@
 
 </div>
 
-</div>
-</div>
 
 <!--Basic Scripts-->
 <script src="assets/js/jquery-2.0.3.min.js"></script>
@@ -229,8 +245,8 @@
                 //生成表格
                 addData = "<tr><td>" + results[i].name +
                     "</td><td >" + results[i].snumber +
-                    "</td><td>"+results[i].department+
-                    "</td><td><a href='#' style='margin-left:5px;' class='btn btn-info btn-xs edit'><i class='fa fa-edit'></i> 详情</a></td></tr>";
+                    "</td><td>"+results[i].department
+//                    + "</td><td><a href='#' style='margin-left:5px;' class='btn btn-info btn-xs edit'><i class='fa fa-edit'></i> 详情</a></td></tr>";
                 $("#studentList").children("tbody").append(addData);
 
             }//对列表的生成初始化
@@ -257,8 +273,8 @@
                 //生成表格
                 addData = "<tr><td>" + results[i].name +
                     "</td><td >" + results[i].tnumber +
-                    "</td><td>"+results[i].department+
-                    "</td><td><a href='#' style='margin-left:5px;' class='btn btn-info btn-xs edit'><i class='fa fa-edit'></i> 详情</a></td></tr>";
+                    "</td><td>"+results[i].department
+//                    + "</td><td><a href='#' style='margin-left:5px;' class='btn btn-info btn-xs edit'><i class='fa fa-edit'></i> 详情</a></td></tr>";
                 $("#teacherList").children("tbody").append(addData);
 
             }//对列表的生成初始化

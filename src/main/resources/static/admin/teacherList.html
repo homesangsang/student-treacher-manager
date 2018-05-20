@@ -13,18 +13,17 @@
     <div style="margin-bottom: 10px;"></div>
 
     <div class="layui-btn-group demoTable">
-        <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
-        <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
-        <button class="layui-btn" data-type="isAll">验证是否全选</button>
+        <!--< class="layui-btn" data-type="isAll">新增老师</button>-->
     </div>
 
     <!--显示数据表格-->
     <table id="getTeacherList" lay-filter="getTeacherList"></table>
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <div class="layui-btn-group">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </div>
     </script>
 
 
@@ -47,9 +46,31 @@
             table.on('tool(getTeacherList)', function(obj){
                 var data = obj.data;
                 if(obj.event === 'detail'){
-                    layer.msg('ID：'+ data.id + ' 的查看操作');
+                    layer.open({
+                        type:2,
+                        title:['详细信息','text-align:center'],
+                        content:"teacherModify.html?id="+data.id +
+                            "&name=" + data.name +
+                            "&tnumber=" + data.tnumber +
+                            "&sex=" + data.sex +
+                            "&department=" + data.department
+                    })
                 } else if(obj.event === 'del'){
-                    layer.confirm('真的删除行么', function(index){
+                    layer.confirm('真的删除吗？', function(index){
+                        $.ajax({
+                            url:'/admin/delTeacher',
+                            async: false,
+                            cache: false,
+                            type: 'POST',
+                            contentType: 'application/json;charset=UTF-8',
+                            data:JSON.stringify(data),
+                            headers: {
+                              "Authorization":$.cookie("Authorization")
+                            },
+                            success: function (data, status, xhr) {
+                                layer.msg(data);
+                            }
+                        });
                         obj.del();
                         layer.close(index);
                     });
@@ -96,11 +117,11 @@
                 },
                 page: true,
                 cols: [[
-                    {field:'id', title:'ID', sort:true, fixed:'left'},
+//                    {field:'id', title:'ID', sort:true, fixed:'left'},
                     {field:'name', title:'姓名'},
                     {field:'tnumber', title:'工号'},
                     {field:'department', title:'学院'},
-                    {field:'sex', title:'性别'},
+//                    {field:'sex', title:'性别'},
                     {fixed: 'right', align:'center', toolbar: '#barDemo'}
                 ]]
             });

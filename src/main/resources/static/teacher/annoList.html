@@ -12,13 +12,21 @@
     </ul>
     <div style="margin-bottom: 10px;"></div>
 
+    <div style="margin-top: 10px;" class="layui-container">
+        <div class="layui-btn-group">
+            <button class="layui-btn layui-btn-primary">
+                <a href="annoAdd.html">发布新公告</a>
+            </button>
+        </div>
+    </div>
     <!--显示数据表格-->
     <table id="selectAnnouByPage" lay-filter="selectAnnouByPage"></table>
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <div class="layui-btn-group">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </div>
     </script>
 
 
@@ -45,11 +53,34 @@
                     })
                 } else if(obj.event === 'del'){
                     layer.confirm('真的删除行么', function(index){
+                        console.log(data);
+                        $.ajax({
+                            url:'/teacher/delAnn',
+                            async: false,
+                            cache: false,
+                            type: 'POST',
+                            contentType: 'application/json;charset=UTF-8',
+                            data:JSON.stringify(data),
+                            headers: {
+                                "Authorization":$.cookie("Authorization")
+                            },
+                            success: function (data, status, xhr) {
+                                layer.msg(data);
+                            }
+                        });
                         obj.del();
                         layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
-                    layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                    layer.open({
+                        type:2,
+                        area: ['300px', '500px'],
+                        title:['详细信息','text-align:center'],
+                        content:"addModify.html?id="+data.id +
+                        "&title=" + data.title +
+                        "&time=" + data.time +
+                        "&content=" + data.content
+                    });
                 }
             });
 
@@ -91,12 +122,12 @@
                 },
                 page: true,
                 cols: [[
-                    {field:'id', title:'ID', sort:true, fixed:'left', width:'2%'},
-                    {field:'title', title:'公告标题', width: '15%'},
-                    {field:'time', title:'时间', width: '10%'},
-                    {field:'content', title:'内容', width: '5%'},
-                    {field:'teacher.name', title:'发布人', width: '5%'},
-                    {fixed: 'right', align:'center', toolbar: '#barDemo', width: '38%'}
+//                    {field:'id', title:'ID', sort:true, fixed:'left'},
+                    {field:'title', title:'公告标题'},
+                    {field:'time', title:'时间'},
+//                    {field:'content', title:'内容'},
+//                    {field:'teacher.name', title:'发布人'},
+                    {fixed: 'right', align:'center', toolbar: '#barDemo'}
                 ]]
             });
         });

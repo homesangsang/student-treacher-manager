@@ -7,11 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created with IntelliJ IDEA.
  * Description:
- * User: 桑智勇(homesangsang)
- * Date: 2018-05-14
- * Time: 11:37
  */
 public class JwtUserFactory {
     private JwtUserFactory() {

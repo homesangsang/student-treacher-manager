@@ -6,11 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
  * Description: 权限表
- * User: 桑智勇(homesangsang)
- * Date: 2018-05-14
- * Time: 10:19
  */
 @Entity
 public class Authority {

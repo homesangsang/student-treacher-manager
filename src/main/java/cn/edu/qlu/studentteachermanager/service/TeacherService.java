@@ -109,5 +109,11 @@ public class TeacherService {
     }
 
 
-
+    public void deleteAnn(String username, Announcement announcement) {
+        Teacher teacher = teacherDao.findByTnumber(username);
+        Announcement ann = announcementService.findAnnById(announcement.getId());
+        teacher.getAnnouncementList().remove(ann);
+        teacherDao.save(teacher);
+        announcementService.remove(ann);
+    }
 }

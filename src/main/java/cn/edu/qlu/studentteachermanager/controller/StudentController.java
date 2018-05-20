@@ -122,6 +122,12 @@ public class StudentController {
         return new ResultMessage(200, list, Long.parseLong(String.valueOf(list.size())), "success");
     }
 
+    /**
+     * 删除学生信息
+     * @param authentication
+     * @param id
+     * @return
+     */
     @GetMapping("/deleteSelectedById")
     public String deleteSelected(Authentication authentication,Integer id) {
         String username = (String) authentication.getPrincipal();

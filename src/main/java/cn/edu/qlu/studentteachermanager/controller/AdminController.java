@@ -7,9 +7,12 @@ import cn.edu.qlu.studentteachermanager.entity.Teacher;
 import cn.edu.qlu.studentteachermanager.message.ResultMessage;
 import cn.edu.qlu.studentteachermanager.service.StudentService;
 import cn.edu.qlu.studentteachermanager.service.TeacherService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +35,8 @@ public class AdminController {
     @Autowired
     private TeacherService teacherService;
 
+    private Logger logger = LoggerFactory.getLogger(AdminController.class);
+
 
     /**
      * 添加学生的功能
@@ -45,6 +50,17 @@ public class AdminController {
         result.put("result", true);
         result.put("message", "success!");
         return result;
+    }
+
+    /**
+     * 根据ID删除学生
+     * @param student
+     * @return
+     */
+    @PostMapping(value = "/delStudent", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public String delStudent(@RequestBody Student student) {
+        studentService.deleteStudentById(student);
+        return "success";
     }
 
     /**

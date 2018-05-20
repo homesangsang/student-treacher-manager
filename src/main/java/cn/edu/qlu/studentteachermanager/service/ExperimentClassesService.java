@@ -8,11 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
- * Created with IntelliJ IDEA.
  * Description:
- * User: 桑智勇(homesangsang)
- * Date: 2018-05-14
- * Time: 9:13
  */
 @Service
 public class ExperimentClassesService {

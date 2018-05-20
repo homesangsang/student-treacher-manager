@@ -8,11 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 /**
- * Created with IntelliJ IDEA.
  * Description:
- * User: 桑智勇(homesangsang)
- * Date: 2018-05-14
- * Time: 8:51
  */
 @Service
 public class AnnouncementService {
@@ -39,5 +35,9 @@ public class AnnouncementService {
 
     public Announcement save(Announcement announcement) {
         return announcementDao.save(announcement);
+    }
+
+    public void remove(Announcement announcement) {
+        announcementDao.delete(announcement);
     }
 }

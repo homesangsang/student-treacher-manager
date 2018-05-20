@@ -102,6 +102,17 @@ public class TeacherController {
         return teacherService.addAnn(announcement, (String)authentication.getPrincipal());
     }
 
-
+    /**
+     * 删除发布公告
+     * @param authentication
+     * @param announcement
+     * @return
+     */
+    @PostMapping(value = "/delAnn")
+    public String deleteAnn(Authentication authentication, @RequestBody Announcement announcement) {
+        String username = (String)authentication.getPrincipal();
+        teacherService.deleteAnn(username, announcement);
+        return "success";
+    }
 
 }
