@@ -9,7 +9,7 @@ Purchase: http://wrapbootstrap.com
 <!--Head-->
 <head>
     <meta charset="utf-8" />
-    <title>工大选课系统移动端</title>
+    <title>开放实验预约系统</title>
 
     <meta name="description" content="login page" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -37,7 +37,7 @@ Purchase: http://wrapbootstrap.com
 <body>
     <div class="login-container animated fadeInDown">
         <div class="loginbox bg-white" style="height:300px!important;">
-            <div class="loginbox-title">工大选课管理系统</div>
+            <div class="loginbox-title">开放实验预约系统</div>
            <!--  <div class="loginbox-social">
                <div class="social-title ">Connect with Your Social Accounts</div>
                <div class="social-buttons">
@@ -81,10 +81,12 @@ Purchase: http://wrapbootstrap.com
     <script src="assets/js/jquery-2.0.3.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="./layui/jquery.cookie.js"></script>
+    <script src="./layui/layui.all.js"></script>
 
     <!--Beyond Scripts-->
     <script src="assets/js/beyond.js"></script>
     <script>
+        var layer = layui.layer;
     urlLogin = "/wanna605/toAdminLogin";
     $("[type='button']").on('click',function(){
       if(username.value==""||password.value==""){
@@ -101,6 +103,7 @@ Purchase: http://wrapbootstrap.com
             success:function(data, status, xhr){
                 var authorization = xhr.getResponseHeader("Authorization");
                     $.cookie("Authorization", authorization);
+                    layer.msg("登录成功！")
                     $.ajax({
                         url: '/users/hello',
                         async: true,
@@ -128,6 +131,9 @@ Purchase: http://wrapbootstrap.com
                             }
                         }
                     });
+            },
+            error:function (xhr, status, error) {
+                layer.msg("登录失败：用户名或密码错误")
             }
         });
       }
