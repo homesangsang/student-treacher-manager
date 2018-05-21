@@ -7,7 +7,7 @@
     <link href="../layui/css/layui.css" rel="stylesheet">
     <style>
         .index-body{
-            margin: 30% auto;
+            margin: 10em auto;
         }
     </style>
 </head>
@@ -25,37 +25,51 @@
                         <!-- 隐藏id， 传值的时候使用-->
                         <input id="id" type="hidden" class="layui-input" autocomplete="false" name="id">
 
-                        <!--姓名-->
+                        <!--实验名称-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input id="name" type="text" placeholder="姓名" class="layui-input" required autocomplete="false" name="name">
+                                <input id="name" type="text" placeholder="实验名称" class="layui-input" required autocomplete="false" name="name">
                             </div>
                         </div>
-                        <!--学号-->
+                        <!--地点-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input id="snumber" type="text" placeholder="学号" class="layui-input" required autocomplete="false" name="snumber">
-                            </div>
-                        </div>
-
-                        <!--学院-->
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <input id="department" type="text" placeholder="学院" class="layui-input" required autocomplete="false" name="department">
+                                <input id="location" type="text" placeholder="地点" class="layui-input" required autocomplete="false" name="location">
                             </div>
                         </div>
 
-                        <!--性别-->
+                        <!--时间-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input id="sex" type="text" placeholder="性别" class="layui-input" required autocomplete="false" name="sex">
+                                <input id="time" type="text" placeholder="时间" class="layui-input" required autocomplete="false" name="time">
+                            </div>
+                        </div>
+
+                        <!--学时-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input id="hour" type="text" placeholder="学时" class="layui-input" required autocomplete="false" name="hour">
+                            </div>
+                        </div>
+
+                        <!--学分-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input id="credit" type="text" placeholder="学分" class="layui-input" required autocomplete="false" name="credit">
+                            </div>
+                        </div>
+
+                        <!--开课人数-->
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input id="sum" type="text" placeholder="开课人数" class="layui-input" required autocomplete="false" name="sum">
                             </div>
                         </div>
 
                         <!-- 按钮事件-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">修改</button>
+                                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">查看</button>
                             </div>
                         </div>
                     </form>
@@ -79,7 +93,7 @@
             // 监听发布
             form.on('submit(formDemo)', function (data) {
                 $.ajax({
-                    url:'/admin/addStudent',
+                    url:'/teacher/addExpClass',
                     async: false,
                     cache: false,
                     type: 'POST',
@@ -101,14 +115,18 @@
             function reset() {
                 var qid = $.query.get("id");
                 var qname = $.query.get("name");
-                var qsnumber = $.query.get("snumber");
-                var qdepartment = $.query.get("department");
-                var qsex = $.query.get("sex");
-                $("#id").val(qid);
-                $("#name").val(qname);
-                $("#snumber").val(qsnumber);
-                $("#department").val(qdepartment);
-                $("#sex").val(qsex);
+                var qlocation = $.query.get("location");
+                var qtime = $.query.get("time");
+                var qhour = $.query.get("hour");
+                var qcredit = $.query.get("credit");
+                var qsum = $.query.get("sum");
+                $("#id").val(qid)
+                $("#name").val(qname)
+                $("#location").val(qlocation)
+                $("#time").val(qtime)
+                $("#hour").val(qhour)
+                $("#credit").val(qcredit)
+                $("#sum").val(qsum)
             }
         });
     </script>

@@ -11,20 +11,28 @@
         <li class="layui-nav-item">选课列表</li>
     </ul>
     <div style="margin-bottom: 10px;"></div>
+    <div class="layui-container">
+        <div class="layui-btn-group">
+            <a href="classAdd.html" class="layui-btn layui-btn-primary">新增课程</a>
+            <a href="selectExpDetail.html" class="layui-btn layui-btn-primary">学生选课</a>
+        </div>
+    </div>
 
     <div class="layui-btn-group demoTable">
-        <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
-        <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
-        <button class="layui-btn" data-type="isAll">验证是否全选</button>
+        <!--<button class="layui-btn" data-type="getCheckData">获取选中行数据</button>-->
+        <!--<button class="layui-btn" data-type="getCheckLength">获取选中数目</button>-->
+        <!--<button class="layui-btn" data-type="isAll">验证是否全选</button>-->
     </div>
 
     <!--显示数据表格-->
     <table id="selectExpClass" lay-filter="selectExpClass"></table>
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <div class="layui-btn-group">
+            <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </div>
     </script>
 
 
@@ -54,7 +62,18 @@
                         layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
-                    layer.alert('编辑行：<br>'+ JSON.stringify(data))
+                    layer.open({
+                        type:2,
+                        area: ['300px', '500px'],
+                        title:['详细信息','text-align:center'],
+                        content:"classModify.html?id="+data.id +
+                        "&name=" + data.name +
+                        "&location=" + data.location +
+                        "&time=" + data.time +
+                        "&hour=" + data.hour +
+                        "&credit=" + data.credit +
+                        "&sum=" + data.sum
+                    });
                 }
             });
 
@@ -96,13 +115,13 @@
                 },
                 page: true,
                 cols: [[
-                    {field:'id', title:'ID', sort:true, fixed:'left'},
+//                    {field:'id', title:'ID', sort:true, fixed:'left'},
                     {field:'name', title:'实验名称'},
                     {field:'location', title:'地点'},
                     {field:'time', title:'时间'},
-                    {field:'hour', title:'学时'},
-                    {field:'credit', title:'学分'},
-                    {field:'sum', title:'开课人数'},
+//                    {field:'hour', title:'学时'},
+//                    {field:'credit', title:'学分'},
+//                    {field:'sum', title:'开课人数'},
                     {fixed: 'right', align:'center', toolbar: '#barDemo'}
                 ]]
             });

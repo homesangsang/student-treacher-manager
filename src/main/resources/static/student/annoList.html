@@ -17,8 +17,8 @@
 
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+        <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
     </script>
 
 
@@ -37,12 +37,7 @@
                 var data = obj.data;
                 if(obj.event === 'detail'){
 //                    layer.msg('ID：'+ data.content + ' 的查看操作');
-                    layer.open({
-                        type: 1,
-                        content:'<h3>修改课程信息</h3>',
-                        anim:'up',
-                        style:'position:fixed; bottom:0; left:0; width: 100%; height: 200px; padding:10px 0; border:none;'
-                    })
+                    layer.alert(data.content);
                 } else if(obj.event === 'del'){
                     layer.confirm('真的删除行么', function(index){
                         obj.del();
@@ -91,12 +86,12 @@
                 },
                 page: true,
                 cols: [[
-                    {field:'id', title:'ID', sort:true, fixed:'left', width:'2%'},
-                    {field:'title', title:'公告标题', width: '15%'},
-                    {field:'time', title:'时间', width: '10%'},
-                    {field:'content', title:'内容', width: '5%'},
-                    {field:'teacher.name', title:'发布人', width: '5%'},
-                    {fixed: 'right', align:'center', toolbar: '#barDemo', width: '38%'}
+//                    {field:'id', title:'ID', sort:true, fixed:'left'},
+                    {field:'title', title:'公告标题'},
+                    {field:'time', title:'时间'},
+                    {field:'content', title:'内容'},
+//                    {field:'teacher.name', title:'发布人', width: '5%'},
+                    {fixed: 'right', align:'center', toolbar: '#barDemo'}
                 ]]
             });
         });

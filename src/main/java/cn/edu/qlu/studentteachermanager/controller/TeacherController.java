@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.Result;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -64,9 +65,11 @@ public class TeacherController {
         if (page > 0) {
             page--;
         }
+        String username = (String)authentication.getPrincipal();
         Map<Object, Object> result = new HashMap<>();
         Page<ExperimentClasses> pages  = experimentClassesService.findAll(new PageRequest(page, size));
-        return new ResultMessage(200, pages.getContent(), pages.getTotalElements(), "success");
+        List<ExperimentClasses> experimentClassesList = teacherService.findTeacherByUsername(username).getExperimentClasses();
+        return new ResultMessage(200, experimentClassesList, Long.parseLong(String.valueOf(experimentClassesList.size())), "success");
     }
 
 

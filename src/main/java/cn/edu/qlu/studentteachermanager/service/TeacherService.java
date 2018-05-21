@@ -70,13 +70,37 @@ public class TeacherService {
      * @param experimentClasses
      * @return
      */
-    public ExperimentClasses addExpClass(ExperimentClasses experimentClasses, String username) {
+    public void addExpClass(ExperimentClasses experimentClasses, String username) {
         Teacher teacher = teacherDao.findByTnumber(username);
-//        experimentClasses.getTeachers().add(teacher);
-        List<Teacher> list = new ArrayList<>();
-        list.add(teacher);
-        experimentClasses.setTeachers(list);
-        return experimentClassesService.save(experimentClasses);
+
+        ExperimentClasses exp = experimentClassesService.findById(experimentClasses.getId());
+        if (exp == null || exp.getId() == null) {
+            List<Teacher> list = new ArrayList<>();
+            list.add(teacher);
+            exp.setTeachers(list);
+            if (teacher.getExperimentClasses() != null) {
+                teacher.getExperimentClasses().add(exp);
+            } else {
+                List<ExperimentClasses> list1 = new ArrayList<>();
+                list1.add(exp);
+                teacher.setExperimentClasses(list1);
+            }
+            experimentClassesService.save(exp);
+            teacherDao.save(teacher);
+
+        } else {
+            List<Teacher> ts = experimentClasses.getTeachers();
+            if (ts != null) {
+                experimentClasses.getTeachers().add(teacher);
+            } else {
+
+                List<Teacher> list = new ArrayList<>();
+                list.add(teacher);
+                experimentClasses.setTeachers(list);
+            }
+            experimentClassesService.save(experimentClasses);
+        }
+
     }
 
     /**
@@ -115,5 +139,9 @@ public class TeacherService {
         teacher.getAnnouncementList().remove(ann);
         teacherDao.save(teacher);
         announcementService.remove(ann);
+    }
+
+    public Teacher findTeacherByUsername (String username) {
+        return teacherDao.findByTnumber(username);
     }
 }
