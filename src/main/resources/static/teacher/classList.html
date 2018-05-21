@@ -5,16 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>选课列表</title>
     <link href="../layui/css/layui.css" rel="stylesheet">
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <ul class="layui-nav layui-bg-blue">
+    <ul class="layui-nav layui-bg-blue" style="text-align: center;">
         <li class="layui-nav-item">选课列表</li>
     </ul>
     <div style="margin-bottom: 10px;"></div>
     <div class="layui-container">
         <div class="layui-btn-group">
             <a href="classAdd.html" class="layui-btn layui-btn-primary">新增课程</a>
-            <a href="selectExpDetail.html" class="layui-btn layui-btn-primary">学生选课</a>
         </div>
     </div>
 
@@ -29,9 +33,9 @@
 
     <script type="text/html" id="barDemo">
         <div class="layui-btn-group">
-            <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>-->
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
             <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
         </div>
     </script>
 
@@ -47,6 +51,8 @@
             var layer = layui.layer;
             var $ = layui.jquery;
 
+            layer.msg("横屏效果更佳！")
+
             //监听表格复选框选择
             table.on('checkbox(demo)', function(obj){
                 console.log(obj)
@@ -55,7 +61,12 @@
             table.on('tool(selectExpClass)', function(obj){
                 var data = obj.data;
                 if(obj.event === 'detail'){
-                    layer.msg('ID：'+ data.id + ' 的查看操作');
+                    layer.open({
+                        type:2,
+                        area: ['300px', '500px'],
+                        title:['详细信息','text-align:center'],
+                        content:"studentExpList.html?id="+data.id,
+                    });
                 } else if(obj.event === 'del'){
                     layer.confirm('真的删除行么', function(index){
                         obj.del();

@@ -2,6 +2,7 @@ package cn.edu.qlu.studentteachermanager.controller;
 
 import cn.edu.qlu.studentteachermanager.entity.Announcement;
 import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
+import cn.edu.qlu.studentteachermanager.entity.Student;
 import cn.edu.qlu.studentteachermanager.message.ResultMessage;
 import cn.edu.qlu.studentteachermanager.service.AnnouncementService;
 import cn.edu.qlu.studentteachermanager.service.ExperimentClassesService;
@@ -70,6 +71,27 @@ public class TeacherController {
         Page<ExperimentClasses> pages  = experimentClassesService.findAll(new PageRequest(page, size));
         List<ExperimentClasses> experimentClassesList = teacherService.findTeacherByUsername(username).getExperimentClasses();
         return new ResultMessage(200, experimentClassesList, Long.parseLong(String.valueOf(experimentClassesList.size())), "success");
+    }
+
+    /**
+     * 查看不同课程的选课详情
+     * @param authentication
+     * @param id
+     * @param page
+     * @param size
+     * @return
+     */
+    @RequestMapping("/selectExpClassStudent")
+    public ResultMessage selectExpClassStudent(
+            Authentication authentication,
+            Integer id,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size
+    ) {
+        String username = (String)authentication.getPrincipal();
+        List<Student> students = teacherService.selectExpClassStudent(username, id);
+        ResultMessage resultMessage  = new ResultMessage(200, students, Long.parseLong(String.valueOf(students.size())), "success");
+        return resultMessage;
     }
 
 

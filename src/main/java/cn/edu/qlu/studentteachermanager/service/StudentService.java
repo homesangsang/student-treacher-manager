@@ -75,6 +75,12 @@ public class StudentService {
         }
         exp.setSum(exp.getSum() - 1);
         if (exp.getStudents() != null) {
+            List<Student> stus = exp.getStudents();
+            for (Student stu : stus) {
+                if (stu.getSnumber().equals(student.getSnumber())) {
+                    return false;
+                }
+            }
             exp.getStudents().add(student);
         } else {
             List<Student> list = new ArrayList<>();

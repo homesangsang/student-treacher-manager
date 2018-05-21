@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>选课列表</title>
+    <title>选课详情信息</title>
     <link href="../layui/css/layui.css" rel="stylesheet">
     <style>
         body{
@@ -12,13 +12,13 @@
     </style>
 </head>
 <body>
-    <ul class="layui-nav layui-bg-blue" style="text-align: center;">
-        <li class="layui-nav-item">选课列表</li>
+    <ul class="layui-nav layui-bg-blue">
+        <li class="layui-nav-item">选课详细信息</li>
     </ul>
     <div style="margin-bottom: 10px;"></div>
 
     <div class="layui-btn-group demoTable">
-        <button class="layui-btn" data-type="getCheckData">新增学生</button>
+        <!--<button class="layui-btn" data-type="getCheckData">新增学生</button>-->
     </div>
 
     <!--显示数据表格-->
@@ -30,8 +30,9 @@
         <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
         <div class="layui-btn-group">
             <!--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">修改</a>-->
-            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+            <!--<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>-->
+            <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
         </div>
     </script>
 
@@ -48,6 +49,8 @@
             var layer = layui.layer;
             var $ = layui.jquery;
 
+            var expId = $.query.get("id");
+
             //监听表格复选框选择
             table.on('checkbox(demo)', function(obj){
                 console.log(obj)
@@ -56,7 +59,6 @@
             table.on('tool(getStudentList)', function(obj){
                 var data = obj.data;
                 if(obj.event === 'detail'){
-                    // layer.msg('ID：'+ data.id + ' 的查看操作');
                     layer.open({
                         type:1,
                         title:['详细信息','text-align:center'],
@@ -107,16 +109,9 @@
 
             var $ = layui.$, active = {
                 getCheckData: function(){ //获取选中数据
-                    /*var checkStatus = table.checkStatus('idTest')
+                    var checkStatus = table.checkStatus('idTest')
                         ,data = checkStatus.data;
-                    layer.alert(JSON.stringify(data));*/
-                    layer.open({
-                        type:2,
-                        area: ['300px', '500px'],
-                        title:['详细信息','text-align:center'],
-                        content:"studentAdd.html"
-                    })
-
+                    layer.alert(JSON.stringify(data));
                 }
                 ,getCheckLength: function(){ //获取选中数目
                     var checkStatus = table.checkStatus('idTest')
@@ -135,11 +130,11 @@
             });
             table.render({
                elem: '#getStudentList',
-                url:'/admin/getStudentList',
+                url:'/teacher/selectExpClassStudent',
                 headers:{Authorization:$.cookie("Authorization")},
                 request: {
                   pageName: 'page',
-                  limitName: 'size'
+                  limitName: 'size',
                 },
                 response: {
                     statusName: 'status' //数据状态的字段名称，默认：code
@@ -149,6 +144,9 @@
                     ,dataName: 'rows' //数据列表的字段名称，默认：data
                 },
                 page: true,
+                where: {
+                   id:expId
+                },
                 cols: [[
 //                    {field:'id', title:'ID', sort:true, fixed:'left'}, 不显示
                     {field:'name', title:'姓名'},
@@ -160,13 +158,7 @@
             });
         });
     </script>
-<script type="text/html" id="editLayer">
-    <form class="layui-form" >
-        <input type="text" class="layui-form-text" placeholder="姓名">
-        <input type="text" class="layui-form-text" placeholder="学院">
-        <input type="text" class="layui-form-text" placeholder="学号">
-    </form>
-</script>
+
 </body>
 
 </html>

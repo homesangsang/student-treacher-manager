@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>login</title>
+    <title>新增课程</title>
     <link href="../layui/css/layui.css" rel="stylesheet">
     <style>
-        .index-body{
-            margin: 30% auto;
+        body{
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <ul class="layui-nav layui-bg-blue">
-        <li class="layui-nav-item">system</li>
+    <ul class="layui-nav layui-bg-blue" style="text-align: center;">
+        <li class="layui-nav-item">新增课程</li>
     </ul>
     <br>
-    <div class="layui-container index-body" >
+    <div class="layui-container" >
         <div class="layui-row">
             <div class="layui-col-xs9 layui-col-sm9 layui-col-md9">
                 <div class="">
@@ -50,13 +50,13 @@
                         <!-- 学分-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input type="text" placeholder="学时" class="layui-input" required autocomplete="false" name="credit">
+                                <input type="text" placeholder="学分" class="layui-input" required autocomplete="false" name="credit">
                             </div>
                         </div>
                         <!-- 人数-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input type="text" placeholder="学时" class="layui-input" required autocomplete="false" name="sum">
+                                <input type="text" placeholder="开课人数" class="layui-input" required autocomplete="false" name="sum">
                             </div>
                         </div>
                         <!-- 按钮事件-->
@@ -64,7 +64,7 @@
                             <div class="layui-input-block">
                                 <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">发布</button>
                                 <!--<button class="layui-btn layui-btn-normal">重置</button>-->
-                                <button class="layui-btn layui-btn-normal">重置</button>
+                                <button class="layui-btn layui-btn-normal" type="reset">重置</button>
                             </div>
                         </div>
                     </form>

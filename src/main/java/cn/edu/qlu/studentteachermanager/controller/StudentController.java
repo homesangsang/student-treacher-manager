@@ -101,9 +101,13 @@ public class StudentController {
     @RequestMapping("/selectExpClassById")
     public Map<Object, Object> selectExpClassById(Integer id, Authentication authentication) {
         String username = (String)authentication.getPrincipal();
-        studentService.selectExpClassById(id, username);
+        boolean result = studentService.selectExpClassById(id, username);
         Map<Object, Object> map = new HashMap<>();
-        map.put("result","true");
+        if (result) {
+            map.put("result","success");
+        } else {
+            map.put("result", "failed!课程已选或余量为0");
+        }
         return map;
     }
 

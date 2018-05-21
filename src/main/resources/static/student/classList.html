@@ -7,7 +7,7 @@
     <link href="../layui/css/layui.css" rel="stylesheet">
 </head>
 <body>
-    <ul class="layui-nav layui-bg-blue">
+    <ul class="layui-nav layui-bg-blue" style="text-align: center;">
         <li class="layui-nav-item">选课列表</li>
     </ul>
     <div style="margin-bottom: 10px;"></div>
@@ -16,14 +16,17 @@
         <!--<button class="layui-btn" data-type="getCheckData">获取选中行数据</button>-->
         <!--<button class="layui-btn" data-type="getCheckLength">获取选中数目</button>-->
         <!--<button class="layui-btn" data-type="isAll">验证是否全选</button>-->
+        <a href="selectedClassList.html" class="layui-btn layui-btn-primary">查看已选课程</a>
     </div>
 
     <!--显示数据表格-->
     <table id="selectExpClass" lay-filter="selectExpClass"></table>
 
     <script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
-        <a class="layui-btn layui-btn-xs" lay-event="edit">选课</a>
+        <div class="layui-btn-group">
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">详情</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">选课</a>
+        </div>
     </script>
 
 
@@ -46,7 +49,18 @@
             table.on('tool(selectExpClass)', function(obj){
                 var data = obj.data;
                 if(obj.event === 'detail'){
-                    layer.msg('ID：'+ data.id + ' 的查看操作');
+                    layer.open({
+                        type:2,
+                        area: ['300px', '500px'],
+                        title:['详细信息','text-align:center'],
+                        content:"classModify.html?id="+data.id +
+                        "&name=" + data.name +
+                        "&location=" + data.location +
+                        "&time=" + data.time +
+                        "&hour=" + data.hour +
+                        "&credit=" + data.credit +
+                        "&sum=" + data.sum
+                    });
                 }  else if(obj.event === 'edit'){
                     $.ajax({
                         url: '/student/selectExpClassById',
@@ -60,10 +74,9 @@
                             "id":data.id
                         },
                         success: function (data) {
-                            layer.msg("选课成功");
+                            layer.msg(data.result);
                         },
                     });
-                    layer.alert('编辑行：<br>'+ JSON.stringify(data))
                 }
             });
 
@@ -105,13 +118,13 @@
                 },
                 page: true,
                 cols: [[
-                    {field:'id', title:'ID', sort:true, fixed:'left'},
+                    // {field:'id', title:'ID', sort:true, fixed:'left'},
                     {field:'name', title:'实验名称'},
                     {field:'location', title:'地点'},
                     {field:'time', title:'时间'},
-                    {field:'hour', title:'学时'},
-                    {field:'credit', title:'学分'},
-                    {field:'sum', title:'开课人数'},
+                    // {field:'hour', title:'学时'},
+                    // {field:'credit', title:'学分'},
+                    // {field:'sum', title:'剩余人数'},
                     {fixed: 'right', align:'center', toolbar: '#barDemo'}
                 ]]
             });

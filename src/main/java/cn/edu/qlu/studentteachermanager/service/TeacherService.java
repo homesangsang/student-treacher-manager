@@ -2,10 +2,7 @@ package cn.edu.qlu.studentteachermanager.service;
 
 import cn.edu.qlu.studentteachermanager.dao.TeacherDao;
 import cn.edu.qlu.studentteachermanager.dao.UserDao;
-import cn.edu.qlu.studentteachermanager.entity.Announcement;
-import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
-import cn.edu.qlu.studentteachermanager.entity.MyUser;
-import cn.edu.qlu.studentteachermanager.entity.Teacher;
+import cn.edu.qlu.studentteachermanager.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -77,15 +74,15 @@ public class TeacherService {
         if (exp == null || exp.getId() == null) {
             List<Teacher> list = new ArrayList<>();
             list.add(teacher);
-            exp.setTeachers(list);
+            experimentClasses.setTeachers(list);
             if (teacher.getExperimentClasses() != null) {
-                teacher.getExperimentClasses().add(exp);
+                teacher.getExperimentClasses().add(experimentClasses);
             } else {
                 List<ExperimentClasses> list1 = new ArrayList<>();
-                list1.add(exp);
+                list1.add(experimentClasses);
                 teacher.setExperimentClasses(list1);
             }
-            experimentClassesService.save(exp);
+            experimentClassesService.save(experimentClasses);
             teacherDao.save(teacher);
 
         } else {
@@ -137,11 +134,19 @@ public class TeacherService {
         Teacher teacher = teacherDao.findByTnumber(username);
         Announcement ann = announcementService.findAnnById(announcement.getId());
         teacher.getAnnouncementList().remove(ann);
-        teacherDao.save(teacher);
         announcementService.remove(ann);
+        teacherDao.save(teacher);
+
     }
 
     public Teacher findTeacherByUsername (String username) {
         return teacherDao.findByTnumber(username);
+    }
+
+    public List<Student> selectExpClassStudent(String username, Integer id) {
+        Teacher teacher = teacherDao.findByTnumber(username);
+        ExperimentClasses  experimentClasses = experimentClassesService.findById(id);
+        return experimentClasses.getStudents();
+
     }
 }

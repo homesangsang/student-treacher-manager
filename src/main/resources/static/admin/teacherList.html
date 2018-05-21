@@ -7,13 +7,13 @@
     <link href="../layui/css/layui.css" rel="stylesheet">
 </head>
 <body>
-    <ul class="layui-nav layui-bg-blue">
+    <ul class="layui-nav layui-bg-blue" style="text-align: center;">
         <li class="layui-nav-item">选课列表</li>
     </ul>
     <div style="margin-bottom: 10px;"></div>
 
     <div class="layui-btn-group demoTable">
-        <!--< class="layui-btn" data-type="isAll">新增老师</button>-->
+        <button class="layui-btn" data-type="isAll">新增老师</button>
     </div>
 
     <!--显示数据表格-->
@@ -40,7 +40,12 @@
 
             //监听表格复选框选择
             table.on('checkbox(demo)', function(obj){
-                console.log(obj)
+                layer.open({
+                    type:2,
+                    area: ['300px', '500px'],
+                    title:['详细信息','text-align:center'],
+                    content:"teacherAdd.html"
+                })
             });
             //监听工具条
             table.on('tool(getTeacherList)', function(obj){
@@ -92,8 +97,14 @@
                     layer.msg('选中了：'+ data.length + ' 个');
                 }
                 ,isAll: function(){ //验证是否全选
-                    var checkStatus = table.checkStatus('idTest');
-                    layer.msg(checkStatus.isAll ? '全选': '未全选')
+                    /*var checkStatus = table.checkStatus('idTest');
+                    layer.msg(checkStatus.isAll ? '全选': '未全选')*/
+                    layer.open({
+                        type:2,
+                        area: ['300px', '500px'],
+                        title:['详细信息','text-align:center'],
+                        content:"teacherAdd.html"
+                    })
                 }
             };
 
