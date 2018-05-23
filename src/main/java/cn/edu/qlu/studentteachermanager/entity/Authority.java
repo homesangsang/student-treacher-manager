@@ -1,6 +1,7 @@
 package cn.edu.qlu.studentteachermanager.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,6 +17,7 @@ public class Authority {
 
     private String authorityName; // 权限名称
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authorities")
     private List<MyUser> myUsers; // 查询权限对应的用户
 

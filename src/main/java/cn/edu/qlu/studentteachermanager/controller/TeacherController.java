@@ -2,6 +2,7 @@ package cn.edu.qlu.studentteachermanager.controller;
 
 import cn.edu.qlu.studentteachermanager.entity.Announcement;
 import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
+import cn.edu.qlu.studentteachermanager.entity.PasswordContent;
 import cn.edu.qlu.studentteachermanager.entity.Student;
 import cn.edu.qlu.studentteachermanager.message.ResultMessage;
 import cn.edu.qlu.studentteachermanager.service.AnnouncementService;
@@ -140,4 +141,15 @@ public class TeacherController {
         return "success";
     }
 
+    /**
+     *
+     * @param passwordContent
+     * @param authentication
+     * @return
+     */
+    @PostMapping("/updatePassword")
+    public String updatePassword(@RequestBody PasswordContent passwordContent, Authentication authentication) {
+        String username = (String) authentication.getPrincipal();
+        return teacherService.updatePassword(username, passwordContent);
+    }
 }

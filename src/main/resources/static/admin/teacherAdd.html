@@ -82,10 +82,6 @@
             reset();
             // 监听发布
             form.on('submit(formDemo)', function (data) {
-
-                layer.msg(JSON.stringify(data.field));
-                console.log(JSON.stringify(data.field));
-
                 $.ajax({
                     url:'/admin/addTeacher',
                     async: false,

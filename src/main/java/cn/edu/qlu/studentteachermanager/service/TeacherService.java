@@ -1,8 +1,11 @@
 package cn.edu.qlu.studentteachermanager.service;
 
+import cn.edu.qlu.studentteachermanager.dao.AuthorityDao;
 import cn.edu.qlu.studentteachermanager.dao.TeacherDao;
 import cn.edu.qlu.studentteachermanager.dao.UserDao;
 import cn.edu.qlu.studentteachermanager.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -29,18 +32,52 @@ public class TeacherService {
     @Autowired
     private AnnouncementService announcementService;
 
+    @Autowired
+    private AuthorityDao authorityDao;
+
+    private Logger logger = LoggerFactory.getLogger(Teacher.class);
+
     /**
      * 添加老师
      * @param teacher
      * @return
      */
     public Teacher addTeacher(Teacher teacher) {
-        MyUser user = new MyUser();
-        user.setUsername(teacher.getTnumber());
-        user.setIfFirstLogin(true);
-        user.setPassword(bCryptPasswordEncoder.encode("666666"));
-        userDao.save(user);
+        MyUser user = userDao.findByUsername(teacher.getTnumber());
+        if (user == null || user.getId() == null) {
+            user = new MyUser();
+            user.setUsername(teacher.getTnumber());
+            user.setIfFirstLogin(true);
+            List<Authority> authorities = new ArrayList<>();
+            Authority authority = authorityDao.findById(2);
+            authorities.add(authority);
+
+            user.setPassword(bCryptPasswordEncoder.encode("666666"));
+            user.setAuthorities(authorities);
+            userDao.save(user);
+            authorityDao.save(authorities);
+        }
         return teacherDao.save(teacher);
+    }
+
+    /**
+     * 重置密码
+     * @param number
+     * @param passes
+     * @return
+     */
+    public String updatePassword(String number, PasswordContent passes) {
+        MyUser user = userDao.findByUsername(number);
+        String oldBcPass = user.getPassword();
+        boolean ifOldPass = bCryptPasswordEncoder.matches(passes.getOldPassword(), oldBcPass);
+        if (ifOldPass) { // 如果旧密码正确，ifOldPass == true
+            user.setPassword(bCryptPasswordEncoder.encode(passes.getNewPassword())); // 更新密码
+            userDao.save(user);
+            return "密码更新成功";
+        }  else {
+            return "旧密码不正确";
+        }
+
     }
 
 

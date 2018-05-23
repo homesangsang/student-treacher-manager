@@ -2,6 +2,8 @@ package cn.edu.qlu.studentteachermanager.controller;
 
 import cn.edu.qlu.studentteachermanager.entity.Announcement;
 import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
+import cn.edu.qlu.studentteachermanager.entity.PasswordContent;
+import cn.edu.qlu.studentteachermanager.entity.Student;
 import cn.edu.qlu.studentteachermanager.message.ResultMessage;
 import cn.edu.qlu.studentteachermanager.service.AnnouncementService;
 import cn.edu.qlu.studentteachermanager.service.ExperimentClassesService;
@@ -12,10 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.ManyToMany;
 import java.util.HashMap;
@@ -137,5 +136,17 @@ public class StudentController {
         String username = (String) authentication.getPrincipal();
         studentService.deleteExpBySnumber(username, id);
         return "success";
+    }
+
+    /**
+     * 重置密码
+     * @param passes
+     * @param authentication
+     * @return
+     */
+    @PostMapping("/updatePassword")
+    public String updatePassword(@RequestBody PasswordContent passes, Authentication authentication) {
+        String username = (String)authentication.getPrincipal();
+        return studentService.updatePassword(username, passes);
     }
 }

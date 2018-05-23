@@ -1,14 +1,16 @@
 package cn.edu.qlu.studentteachermanager.service;
 
+import cn.edu.qlu.studentteachermanager.dao.AuthorityDao;
 import cn.edu.qlu.studentteachermanager.dao.StudentDao;
 import cn.edu.qlu.studentteachermanager.dao.UserDao;
-import cn.edu.qlu.studentteachermanager.entity.ExperimentClasses;
-import cn.edu.qlu.studentteachermanager.entity.MyUser;
-import cn.edu.qlu.studentteachermanager.entity.Student;
+import cn.edu.qlu.studentteachermanager.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,20 +29,34 @@ public class StudentService {
     private ExperimentClassesService experimentClassesService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private AuthorityDao authorityDao;
+
+    private Logger logger = LoggerFactory.getLogger(StudentService.class);
+
     /**
      * 添加学生的方法
      * @param student
      * @return
      */
     public Student addStudent(Student student) {
+        // 用户
         MyUser user = userDao.findByUsername(student.getSnumber());
         if (user == null || user.getId() == null) {
             user = new MyUser();
             user.setUsername(student.getSnumber());
             user.setIfFirstLogin(true);
+            List<Authority> authorities = new ArrayList<>();
+            Authority authority = authorityDao.findById(3);
+            authorities.add(authority);
+
             user.setPassword(bCryptPasswordEncoder.encode("666666"));
+            user.setAuthorities(authorities);
             userDao.save(user);
+            authorityDao.save(authorities);
         }
+        // 权限
         return studentDao.save(student);
     }
 
@@ -130,7 +146,31 @@ public class StudentService {
 
     }
 
+    /**
+     * 删除学生
+     * @param student
+     */
     public void deleteStudentById(Student student) {
         studentDao.delete(student);
+    }
+
+    /**
+     * 重置密码
+     * @param number
+     * @param passes
+     * @return
+     */
+    public String updatePassword(String number, PasswordContent passes) {
+        MyUser user = userDao.findByUsername(number);
+        String oldBcPass = user.getPassword();
+        boolean ifOldPass = bCryptPasswordEncoder.matches(passes.getOldPassword(), oldBcPass);
+        if (ifOldPass) { // 如果旧密码正确，ifOldPass == true
+            user.setPassword(bCryptPasswordEncoder.encode(passes.getNewPassword())); // 更新密码
+            userDao.save(user);
+            return "密码更新成功";
+        }  else {
+            return "旧密码不正确";
+        }
+
     }
 }
