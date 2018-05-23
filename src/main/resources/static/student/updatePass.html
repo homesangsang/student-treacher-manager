@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>新增学生信息</title>
+    <title>修改密码</title>
     <link href="../layui/css/layui.css" rel="stylesheet">
     <style>
         body {
@@ -12,8 +12,8 @@
     </style>
 </head>
 <body>
-    <ul class="layui-nav layui-bg-blue" style="text-align: center;">
-        <li class="layui-nav-item">新增学生信息</li>
+    <ul class="layui-nav layui-bg-blue">
+        <li class="layui-nav-item">修改密码</li>
     </ul>
     <br>
     <div class="layui-container" >
@@ -22,44 +22,33 @@
                 <div class="">
                     <form class="layui-form" action="">
 
-                        <!-- 隐藏id， 传值的时候使用-->
-                        <input id="id" type="hidden" class="layui-input" autocomplete="false" name="id">
-
-                        <!--姓名-->
+                        <!--旧密码-->
                         <div class="layui-form-item">
-                            <label class="layui-form-label">姓名</label>
+                            <label class="layui-form-label">旧密码</label>
                             <div class="layui-input-block">
-                                <input id="name" type="text" placeholder="姓名" class="layui-input" required autocomplete="false" name="name">
+                                <input  id="oldPassword" type="password" placeholder="旧密码" class="layui-input" required autocomplete="false" name="oldPassword">
                             </div>
                         </div>
-                        <!--学号-->
+                        <!--新密码-->
                         <div class="layui-form-item">
-                            <label class="layui-form-label">学号</label>
+                            <label class="layui-form-label">新密码</label>
                             <div class="layui-input-block">
-                                <input id="snumber" type="text" placeholder="学号" class="layui-input" required autocomplete="false" name="snumber">
+                                <input   id="newPassword" type="password" placeholder="新密码" class="layui-input" required autocomplete="false" name="newPassword">
                             </div>
                         </div>
 
-                        <!--学院-->
+                        <!--确认密码-->
                         <div class="layui-form-item">
-                            <label class="layui-form-label">学院</label>
+                            <label class="layui-form-label">确认密码</label>
                             <div class="layui-input-block">
-                                <input id="department" type="text" placeholder="学院" class="layui-input" required autocomplete="false" name="department">
-                            </div>
-                        </div>
-
-                        <!--性别-->
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">性别</label>
-                            <div class="layui-input-block">
-                                <input id="sex" type="text" placeholder="性别" class="layui-input" required autocomplete="false" name="sex">
+                                <input  lay-verify="ifequal" id="newPassword1" type="password" placeholder="确认密码" class="layui-input" required autocomplete="false" name="newPassword1">
                             </div>
                         </div>
 
                         <!-- 按钮事件-->
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">保存</button>
+                                <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">修改</button>
                             </div>
                         </div>
                     </form>
@@ -79,11 +68,19 @@
             var layer = layui.layer;
             var $ = layui.jquery;
             // 表单数据初始化
-            reset();
+            form.verify({
+                ifequal: function (value, item) {
+                    var pass = $("#newPassword").val();
+                    console.log(pass);
+                    if (!(pass === value)) {
+                        return "密码不一致！"
+                    }
+                }
+            })
             // 监听发布
             form.on('submit(formDemo)', function (data) {
                 $.ajax({
-                    url:'/admin/addStudent',
+                    url:'/student/updatePassword',
                     async: false,
                     cache: false,
                     type: 'POST',
@@ -93,27 +90,11 @@
                     },
                     data:JSON.stringify(data.field),
                     success: function (data, status, xhr) {
-                        layer.msg("成功！！！");
+                        layer.msg(data);
                     }
                 });
                 return false;
             });
-
-            /**
-             * 初始化表单操作
-             */
-            function reset() {
-                var qid = $.query.get("id");
-                var qname = $.query.get("name");
-                var qsnumber = $.query.get("snumber");
-                var qdepartment = $.query.get("department");
-                var qsex = $.query.get("sex");
-                $("#id").val(qid);
-                $("#name").val(qname);
-                $("#snumber").val(qsnumber);
-                $("#department").val(qdepartment);
-                $("#sex").val(qsex);
-            }
         });
     </script>
 </body>

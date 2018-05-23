@@ -2,9 +2,11 @@ package cn.edu.qlu.studentteachermanager.controller;
 
 import cn.edu.qlu.studentteachermanager.dao.UserDao;
 import cn.edu.qlu.studentteachermanager.entity.Admin;
+import cn.edu.qlu.studentteachermanager.entity.PasswordContent;
 import cn.edu.qlu.studentteachermanager.entity.Student;
 import cn.edu.qlu.studentteachermanager.entity.Teacher;
 import cn.edu.qlu.studentteachermanager.message.ResultMessage;
+import cn.edu.qlu.studentteachermanager.service.AdminService;
 import cn.edu.qlu.studentteachermanager.service.StudentService;
 import cn.edu.qlu.studentteachermanager.service.TeacherService;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +37,9 @@ public class AdminController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private AdminService adminService;
 
     private Logger logger = LoggerFactory.getLogger(AdminController.class);
 
@@ -140,5 +146,17 @@ public class AdminController {
     @GetMapping("/getTeacherInfo")
     public Teacher getTeacherById(@RequestParam(value = "id") Integer id) {
         return teacherService.getTeacherById(id);
+    }
+
+    /**
+     * 重置密码
+     * @param passes
+     * @param authentication
+     * @return
+     */
+    @PostMapping("/updatePassword")
+    public String updatePassword(@RequestBody PasswordContent passes, Authentication authentication) {
+        String username = (String)authentication.getPrincipal();
+        return adminService.updatePassword(username, passes);
     }
 }
