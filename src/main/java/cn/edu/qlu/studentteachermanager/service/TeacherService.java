@@ -123,16 +123,16 @@ public class TeacherService {
             teacherDao.save(teacher);
 
         } else {
-            List<Teacher> ts = experimentClasses.getTeachers();
+            List<Teacher> ts = exp.getTeachers();
             if (ts != null) {
-                experimentClasses.getTeachers().add(teacher);
+                exp.getTeachers().add(teacher);
             } else {
 
                 List<Teacher> list = new ArrayList<>();
                 list.add(teacher);
-                experimentClasses.setTeachers(list);
+                exp.setTeachers(list);
             }
-            experimentClassesService.save(experimentClasses);
+            experimentClassesService.save(exp);
         }
 
     }
