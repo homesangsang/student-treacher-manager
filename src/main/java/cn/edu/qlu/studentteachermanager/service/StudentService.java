@@ -173,4 +173,8 @@ public class StudentService {
         }
 
     }
+
+    public void save(Student student) {
+        studentDao.save(student);
+    }
 }

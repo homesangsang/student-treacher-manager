@@ -38,4 +38,7 @@ public class ExperimentClassesService {
         return experimentClassesDao.saveAndFlush(experimentClasses);
     }
 
+    public void delete(ExperimentClasses classes) {
+        experimentClassesDao.delete(classes);
+    }
 }

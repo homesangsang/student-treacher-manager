@@ -76,6 +76,7 @@
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="formDemo">确定</button>
+                                <button class="layui-btn layui-btn-danger" lay-submit="" lay-filter="delete">删除</button>
                             </div>
                         </div>
                     </form>
@@ -115,6 +116,23 @@
                 return false;
             });
 
+            form.on('submit(delete)', function (data) {
+                $.ajax({
+                    url:'/teacher/deleteExpClassById',
+                    async: false,
+                    cache: false,
+                    type: 'POST',
+                    contentType: 'application/json;charset=UTF-8',
+                    headers: {
+                      "Authorization":$.cookie("Authorization")
+                    },
+                    data:JSON.stringify(data.field),
+                    success: function (data, status, xhr) {
+                        layer.msg(data);
+                    }
+                });
+                return false;
+            });
             /**
              * 初始化表单操作
              */

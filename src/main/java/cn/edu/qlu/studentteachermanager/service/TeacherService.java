@@ -35,6 +35,9 @@ public class TeacherService {
     @Autowired
     private AuthorityDao authorityDao;
 
+    @Autowired
+    private StudentService studentService;
+
     private Logger logger = LoggerFactory.getLogger(Teacher.class);
 
     /**
@@ -176,14 +179,62 @@ public class TeacherService {
 
     }
 
+    /**
+     * 通过teacher的工号查找老师信息
+     * @param username
+     * @return
+     */
     public Teacher findTeacherByUsername (String username) {
         return teacherDao.findByTnumber(username);
     }
 
+    /**
+     * 根据课程id查看查看对应课程的选课情况
+     * @param username
+     * @param id
+     * @return
+     */
     public List<Student> selectExpClassStudent(String username, Integer id) {
         Teacher teacher = teacherDao.findByTnumber(username);
         ExperimentClasses  experimentClasses = experimentClassesService.findById(id);
         return experimentClasses.getStudents();
+    }
 
+    /**
+     * 删除选课
+     * 课程-老师 多对多，课程-学生 多对多
+     * 先删除课程与学生的关联，再删除老师与课程的关联，最后删除课程
+     * @param username
+     * @param classes
+     * @return
+     */
+    public void deleteExpClass(String username, ExperimentClasses classes) {
+        Teacher teacher = teacherDao.findByTnumber(username);
+        ExperimentClasses experimentClasses = experimentClassesService.findById(classes.getId());
+        List<Student> students = experimentClasses.getStudents();
+        // 取消和学生的关联
+        if (students != null || students.size() == 0) {
+            for (Student student : students) {
+                student.setExperimentClasses(null);
+                experimentClasses.setStudents(null);
+                experimentClassesService.save(experimentClasses);
+                studentService.save(student);
+            }
+        }
+        // 取消老师和课程的关联
+        classes.setTeachers(null);
+        List<ExperimentClasses> experimentClassesList = teacher.getExperimentClasses();
+        if (experimentClassesList != null) {
+            for (ExperimentClasses cls : experimentClassesList) {
+                if (cls.getId() == classes.getId()) {
+                    experimentClassesList.remove(cls);
+                    break;
+                }
+            }
+        }
+        experimentClassesService.save(classes);
+        teacherDao.save(teacher);
+        experimentClassesService.delete(classes);
+        // 删除课程
     }
 }

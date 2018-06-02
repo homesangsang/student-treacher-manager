@@ -68,7 +68,6 @@ public class TeacherController {
             page--;
         }
         String username = (String)authentication.getPrincipal();
-        Map<Object, Object> result = new HashMap<>();
         Page<ExperimentClasses> pages  = experimentClassesService.findAll(new PageRequest(page, size));
         List<ExperimentClasses> experimentClassesList = teacherService.findTeacherByUsername(username).getExperimentClasses();
         return new ResultMessage(200, experimentClassesList, Long.parseLong(String.valueOf(experimentClassesList.size())), "success");
@@ -93,6 +92,22 @@ public class TeacherController {
         List<Student> students = teacherService.selectExpClassStudent(username, id);
         ResultMessage resultMessage  = new ResultMessage(200, students, Long.parseLong(String.valueOf(students.size())), "success");
         return resultMessage;
+    }
+
+    /**
+     * 根据ID删除选课信息
+     * @param authentication
+     * @param experimentClasses
+     * @return
+     */
+    @RequestMapping("/deleteExpClassById")
+    public String deleteExpClassById(
+            Authentication authentication,
+            @RequestBody ExperimentClasses experimentClasses
+    ) {
+        String username = (String)authentication.getPrincipal();
+        teacherService.deleteExpClass(username, experimentClasses);
+        return "删除id："  + "成功";
     }
 
 
