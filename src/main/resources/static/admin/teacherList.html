@@ -27,8 +27,7 @@
     <script type="text/html" id="barDemo">
         <div class="layui-btn-group">
             <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-            <!--不允许管理员随意删除老师信息-->
-            <!--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>-->
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
         </div>
     </script>
 
@@ -80,11 +79,14 @@
                               "Authorization":$.cookie("Authorization")
                             },
                             success: function (data, status, xhr) {
-                                layer.msg(data);
+                                layer.msg(JSON.stringify(data));
+                                obj.del();
+                                layer.close(index);
+                            },
+                            error: function (xhr, status, error) {
+                                layer.msg("删除失败，老师有选课");
                             }
                         });
-                        obj.del();
-                        layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
                     layer.alert('编辑行：<br>'+ JSON.stringify(data))

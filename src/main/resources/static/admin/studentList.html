@@ -86,10 +86,13 @@
                             },
                             success: function (data, status, xhr) {
                                 layer.msg(data);
+                                obj.del();
+                                layer.close(index);
+                            } ,
+                            error: function (xhr, status, error) {
+                                layer.msg("删除失败，学生有选课");
                             }
                         });
-                        obj.del();
-                        layer.close(index);
                     });
                 } else if(obj.event === 'edit'){
                     layer.open({

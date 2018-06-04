@@ -59,16 +59,27 @@ public class AdminController {
     }
 
     /**
-     * 根据ID删除学生
+     * 删除学生，如果学生已经选课，则返回错误码，不删除学生；如果学生还没有选课，则可以删除
      * @param student
      * @return
      */
-    @PostMapping(value = "/delStudent", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/delStudent")
     public String delStudent(@RequestBody Student student) {
         studentService.deleteStudentById(student);
-        return "success";
+        return "成功!";
     }
 
+    /**
+     * 删除老师，如果老师已经发布选课，则返回错误码，不删除老师；如果老师还没有发布课程，则可以删除
+     * @param teacher
+     * @return
+     */
+    @PostMapping(value = "/delTeacher")
+    public String delTeacher(@RequestBody Teacher teacher) {
+        teacherService.deleteTeacher(teacher);
+        logger.info(teacher.toString());
+        return "成功!";
+    }
     /**
      * 添加老师的功能
      * @param teacher

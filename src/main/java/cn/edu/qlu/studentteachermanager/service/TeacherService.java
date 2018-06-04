@@ -237,4 +237,12 @@ public class TeacherService {
         experimentClassesService.delete(classes);
         // 删除课程
     }
+
+    public void deleteTeacher(Teacher teacher) {
+        teacherDao.delete(teacher);
+        MyUser user = userDao.findByUsername(teacher.getTnumber());
+        if (user != null ) {
+            userDao.delete(user);
+        }
+    }
 }
