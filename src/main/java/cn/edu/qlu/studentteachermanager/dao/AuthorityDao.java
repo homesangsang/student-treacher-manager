@@ -8,7 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created with IntelliJ IDEA.
  * Description:
- * User: 桑智勇(homesangsang)
  * Date: 2018-05-23
  * Time: 11:52
  */
